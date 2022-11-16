@@ -6,7 +6,7 @@ const matchSchema = new Schema({
     required: true,
   },
   teamAId: {
-    type: Schema.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Team',
     required: true,
   },
@@ -15,7 +15,7 @@ const matchSchema = new Schema({
     default: 0,
   },
   teamBId: {
-    type: Schema.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Team',
     required: true,
   },
