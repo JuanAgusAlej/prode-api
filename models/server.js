@@ -1,14 +1,17 @@
 /* eslint-disable class-methods-use-this */
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
+const { dbConnection } = require('../config/config');
+const routes = require('../routes');
 const routes = require("../routes");
-const { dbConnection } = require("../config/config");
-require("dotenv").config();
+require('dotenv').config();
+
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+
     this.middleware();
     // Rutas
     this.routes();
