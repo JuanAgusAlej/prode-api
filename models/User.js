@@ -30,7 +30,7 @@ const userSchema = new Schema({
     required: false,
   },
   predictionId: {
-    type: Schema.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Prediction',
     required: false,
   },
