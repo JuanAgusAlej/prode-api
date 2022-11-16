@@ -30,7 +30,8 @@ const userSchema = new Schema({
       required: false
     },
     predictionId: {
-        type: Number,
+        type: Schema.ObjectId,
+        ref: 'Prediction',
         required: false
     }
   });
