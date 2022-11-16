@@ -18,7 +18,7 @@ const tournamentSchema = new Schema({
     type: Number,
     required: true,
   },
-  preditionGoalsPoints: {
+  predictionGoalsPoints: {
     type: Number,
     required: true,
   },
