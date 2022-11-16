@@ -20,7 +20,24 @@ const getTournament = async (req, res, next) => {
 
 const addTournament = async (req, res, next) => {
   try {
-    const tournament = await tournamentService.add(req.body);
+    const {
+      name,
+      matchesId,
+      quantityTeams,
+      predictionResultPoints,
+      predictionGoalsPoints,
+      prizes,
+      region,
+    } = req.body;
+    const tournament = await tournamentService.add({
+      name,
+      matchesId,
+      quantityTeams,
+      predictionResultPoints,
+      predictionGoalsPoints,
+      prizes,
+      region,
+    });
     res.status(201).send(tournament);
   } catch (e) {
     next(e);
@@ -28,10 +45,25 @@ const addTournament = async (req, res, next) => {
 };
 const editTournament = async (req, res, next) => {
   try {
-    const ModifiedTournament = await tournamentService.update(
-      req.params.id,
-      req.body
-    );
+    const {
+      name,
+      matchesId,
+      quantityTeams,
+      predictionResultPoints,
+      predictionGoalsPoints,
+      prizes,
+      region,
+    } = req.body;
+
+    const ModifiedTournament = await tournamentService.update(req.params.id, {
+      name,
+      matchesId,
+      quantityTeams,
+      predictionResultPoints,
+      predictionGoalsPoints,
+      prizes,
+      region,
+    });
     res.send(ModifiedTournament);
   } catch (e) {
     next(e);

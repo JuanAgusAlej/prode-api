@@ -13,7 +13,7 @@ const add = (data) => {
 };
 
 const update = (id, data) => {
-  return Tournament.findByIdAndUpdate(id, { data }, { new: true });
+  return Tournament.findByIdAndUpdate(id, data, { new: true });
 };
 
 const deleteOne = (id) => {
