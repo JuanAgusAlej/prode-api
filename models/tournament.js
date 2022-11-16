@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const tournamentSchema = new Schema({
   name: String,
@@ -10,6 +10,6 @@ const tournamentSchema = new Schema({
   region: String,
 });
 
-const Tournament = model("Tournament", tournamentSchema);
+const Tournament = model('Tournament', tournamentSchema);
 
 module.exports = Tournament;
