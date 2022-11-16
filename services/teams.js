@@ -9,4 +9,20 @@ const post = team => {
   return newTeam.save();
 };
 
-module.exports = { post };
+const getOne = id => {
+  return Team.findById(id);
+};
+
+const update = (id, data) => {
+  return Team.findByIdAndUpdate(
+    id,
+    { $set: data },
+    { returnDocument: 'after' }
+  );
+};
+
+const remove = id => {
+    return Team.findByIdAndDelete(id)
+}
+
+module.exports = { post, getOne, update, remove };
