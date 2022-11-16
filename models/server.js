@@ -42,7 +42,7 @@ class Server {
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log(`Example app listening on port ${this.port}`);
+      console.log(`Prode app listening on port ${this.port}`);
     });
   }
 }
