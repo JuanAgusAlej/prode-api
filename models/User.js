@@ -29,11 +29,11 @@ const userSchema = new Schema({
     type: String,
     required: false,
   },
-  predictionId: {
+  predictionsId: [{
     type: Schema.Types.ObjectId,
     ref: 'Prediction',
     required: false,
-  },
+  }],
 });
 
 const User = model('User', userSchema);
