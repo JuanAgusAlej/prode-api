@@ -1,8 +1,14 @@
 const { Schema, model } = require('mongoose');
 
 const teamSchema = new Schema({
-  name: String,
-  country: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
   logo: String,
 });
 
