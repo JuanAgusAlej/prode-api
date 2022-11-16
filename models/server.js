@@ -3,8 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../config/config');
 const routes = require('../routes');
-
+const routes = require("../routes");
 require('dotenv').config();
+
 
 class Server {
   constructor() {
@@ -28,7 +29,7 @@ class Server {
     this.app.use(cors());
 
     // directorio publico
-    this.app.use(express.static('public'));
+    this.app.use(express.static("public"));
 
     // lectura y parseo del body
     this.app.use(express.json());
@@ -37,7 +38,7 @@ class Server {
   }
 
   routes() {
-    this.app.use('/api', routes);
+    this.app.use("/api", routes);
   }
 
   listen() {
