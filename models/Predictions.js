@@ -1,7 +1,5 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
-
-const Predictions = new Schema({
+const { Schema, model } = require("mongoose");
+const predictions = new Schema({
   goalsA: {
     type: Number,
     required: true,
@@ -24,4 +22,6 @@ const Predictions = new Schema({
   },
 });
 
-module.exports = Predictions;
+const Prediction = model("Prediction", predictions);
+
+module.exports = Prediction;
