@@ -1,14 +1,14 @@
 /* eslint-disable class-methods-use-this */
-const express = require('express');
-const cors = require('cors');
-const { dbConnection } = require('../config/config');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const routes = require("../routes");
+const { dbConnection } = require("../config/config");
+require("dotenv").config();
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    // this.usuariosPath = "/api/usuarios";
     this.middleware();
     // Rutas
     this.routes();
@@ -26,7 +26,7 @@ class Server {
     this.app.use(cors());
 
     // directorio publico
-    this.app.use(express.static('public'));
+    this.app.use(express.static("public"));
 
     // lectura y parseo del body
     this.app.use(express.json());
@@ -35,7 +35,7 @@ class Server {
   }
 
   routes() {
-    // this.app.use(this.usuariosPath, require("../routes/usuarios.js"));
+    this.app.use("/api", routes);
   }
 
   listen() {
