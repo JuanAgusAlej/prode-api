@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const matchSchema = new Schema({
   date: {
-    type: String,
+    type: Date,
     required: true,
   },
   teamAId: {
@@ -17,16 +17,21 @@ const matchSchema = new Schema({
   teamBId: {
     type: Schema.Types.ObjectId,
     ref: 'Team',
-    required: true,
   },
   goalsB: {
     type: Number,
     required: true,
   },
   result: {
-    type: Array,
+    type: String,
     default: true,
   },
+  predictionsId: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Prediction',
+    },
+  ],
 });
 
 const Match = model('Match', matchSchema);
