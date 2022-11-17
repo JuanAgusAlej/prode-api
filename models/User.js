@@ -6,7 +6,7 @@ const userSchema = new Schema({
     required: true,
   },
   tokenGoogle: {
-    type: Array,
+    type: String,
     required: true,
   },
   points: {
@@ -18,23 +18,25 @@ const userSchema = new Schema({
     required: true,
   },
   rol: {
-    type: Number,
-    required: true,
+    type: Schema.Types.ObjectId,
+      ref: 'Rol',
   },
   state: {
-    type: Array,
+    type: Boolean,
     default: true,
   },
   avatar: {
     type: String,
-    required: false,
+    required: true,
   },
-  predictionsId: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Prediction',
-    required: false,
-  }],
-});
+  predictionsId: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Prediction',
+      required: false,
+      default: null
+    },
+  ],
 
 const User = model('User', userSchema);
 
