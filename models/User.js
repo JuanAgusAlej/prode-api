@@ -37,7 +37,6 @@ const userSchema = new Schema({
       default: null
     },
   ],
-});
 
 const User = model('User', userSchema);
 

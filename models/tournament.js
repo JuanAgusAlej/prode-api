@@ -6,7 +6,8 @@ const tournamentSchema = new Schema({
     required: true,
   },
   matchesId: {
-    type: Array,
+    type: Schema.Types.ObjectId,
+    ref: 'Match',
     required: true,
   },
   quantityTeams: {
@@ -17,7 +18,7 @@ const tournamentSchema = new Schema({
     type: Number,
     required: true,
   },
-  preditionGoalsPoints: {
+  predictionGoalsPoints: {
     type: Number,
     required: true,
   },

@@ -1,5 +1,15 @@
 const { Schema, model } = require("mongoose");
 const predictions = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  matchId: {
+    type: Schema.Types.ObjectId,
+    ref: "Match",
+    required: true,
+  },
   goalsA: {
     type: Number,
     required: true,
