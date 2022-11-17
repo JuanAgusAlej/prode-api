@@ -20,14 +20,11 @@ const getMatch = async (req, res, next) => {
 
 const addMatch = async (req, res, next) => {
   try {
-    const { date, teamAId, goalsA, teamBId, goalsB, result } = req.body;
+    const { date, teamAId, teamBId } = req.body;
     const match = await matchService.add({
       date,
       teamAId,
-      goalsA,
       teamBId,
-      goalsB,
-      result,
     });
     res.status(201).send(match);
   } catch (e) {
