@@ -3,9 +3,11 @@ const { Schema, model } = require("mongoose");
 const RoleSchema = Schema({
   rol: {
     type: String,
-    default: 'USER_ROLE'
+    required: true,
+    unique: true
   },
 });
 
-module.exports = model("Role", RoleSchema);
+const Role = model("Role", RoleSchema);
 
+module.exports = Role

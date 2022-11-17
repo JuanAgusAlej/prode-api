@@ -5,7 +5,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  tokenGoogle: {
+  alias: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  uidGoogle: {
     type: String,
     required: true,
   },
@@ -13,13 +18,19 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
-  region: {
+  email: {
     type: String,
     required: true,
+    unique: true,
   },
-  rol: {
-    type: Schema.Types.ObjectId,
-      ref: 'Rol',
+  region: {
+    type: String,
+    enum: ['Argentina', 'Brasil', 'Estados Unidos'],
+    required: true,
+  },
+  role: {
+    type: String,
+    default: 'USER_ROLE',
   },
   state: {
     type: Boolean,
@@ -34,10 +45,18 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Prediction',
       required: false,
-      default: null
+      default: null,
     },
   ],
-})
+  validated: {
+    type: Boolean,
+    default: false,
+  },
+  notifications: {
+    type: Schema.Types.ObjectId,
+    ref: 'Notification',
+  },
+});
 
 const User = model('User', userSchema);
 
