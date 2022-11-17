@@ -18,8 +18,8 @@ const userSchema = new Schema({
     required: true,
   },
   rol: {
-    type: Schema.Types.ObjectId,
-      ref: 'Rol',
+    type: String,
+    required: true,
   },
   state: {
     type: Boolean,

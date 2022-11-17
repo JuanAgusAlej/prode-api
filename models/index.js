@@ -4,6 +4,7 @@ const Tournament = require('./tournament');
 const Team = require('./team');
 const User = require('./User');
 const Match = require('./Match');
+const Role = require('./Role');
 
 module.exports = {
   Log,
@@ -12,4 +13,5 @@ module.exports = {
   Team,
   User,
   Match,
+  Role,
 };
