@@ -5,6 +5,7 @@ const post = team => {
     name: team.name,
     country: team.country,
     logo: team.logo || null,
+    shortName: team.shortName
   });
   return newTeam.save();
 };
