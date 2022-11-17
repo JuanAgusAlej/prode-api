@@ -44,7 +44,8 @@ const login = async (uidGoogle) => {
 
 const signUp = async (data) => {
   const region = 'Argentina'; // Hardcoded temporarily
-  const user = await User.create({ ...data, region });
+  const alias = data.alias ? data.alias : data.name;
+  const user = await User.create({ ...data, alias, region });
   const notification = await Notification.create({ userId: user.id });
   user.notifications = notification.id;
   await user.save();
