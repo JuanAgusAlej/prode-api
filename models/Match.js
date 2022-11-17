@@ -20,7 +20,7 @@ const matchSchema = new Schema({
   },
   goalsB: {
     type: Number,
-    required: true,
+    default: 0,
   },
   result: {
     type: String,
