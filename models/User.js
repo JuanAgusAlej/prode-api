@@ -14,7 +14,7 @@ const userSchema = new Schema({
     default: 0,
   },
   region: {
-    type: Number,
+    type: String,
     required: true,
   },
   rol: {
@@ -37,6 +37,7 @@ const userSchema = new Schema({
       default: null
     },
   ],
+})
 
 const User = model('User', userSchema);
 
