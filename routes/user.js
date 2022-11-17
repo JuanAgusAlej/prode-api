@@ -20,7 +20,7 @@ router.post('/login', login); // Login
 router.post('/signup', signUp); // Sign up
 router.get('/me', validateLoggedUser, detailsUser); // Get details
 router.put('/me', validateLoggedUser, editUser); // Edit a user
-router.put('/:id/notifications', validateLoggedUser, editUserNotification); // Edit notifications
+router.put('/me/notifications', validateLoggedUser, editUserNotification); // Edit notifications
 
 /*
  * Admin endpoints *
