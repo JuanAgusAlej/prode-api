@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { postTeam, getTeam, updateTeam, deleteTeam } = require('../controllers/teams');
+const { postTeam, getTeam, updateTeam, deleteTeam } = require('../controllers/teamsController');
 
 router.post('/', postTeam);
 
