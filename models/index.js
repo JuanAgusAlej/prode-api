@@ -5,6 +5,7 @@ const Team = require('./team');
 const User = require('./User');
 const Match = require('./Match');
 const Role = require('./Role');
+const Notification = require('./Notification');
 
 module.exports = {
   Log,
@@ -14,4 +15,5 @@ module.exports = {
   User,
   Match,
   Role,
+  Notification,
 };
