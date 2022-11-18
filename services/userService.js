@@ -91,10 +91,6 @@ const deleteOne = id => {
   return User.findByIdAndUpdate(id, { state: false });
 };
 
-const validate = id => {
-  return User.findByIdAndUpdate(id, { validated: true });
-};
-
 module.exports = {
   getAll,
   getById,
@@ -104,5 +100,4 @@ module.exports = {
   update,
   updateNotifications,
   deleteOne,
-  validate,
 };
