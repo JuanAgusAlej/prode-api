@@ -79,12 +79,16 @@ const detailsUser = async (req, res, next) => {
 const editUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
+    const validated = req.user.validated
     const { name, region, avatar } = req.body;
-    const modifiedUser = await userService.update(userId, {
+    const data = {
       name,
       region,
       avatar,
-    });
+    }
+    if(!validated) data.validated = !validated
+
+    const modifiedUser = await userService.update(userId, data);
     res.send(modifiedUser);
   } catch (e) {
     next(e);
@@ -108,6 +112,11 @@ const editUserNotification = async (req, res, next) => {
   }
 };
 
+const validateUser = (req, res, next) => {
+
+  userService.validate(id);
+};
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -117,4 +126,5 @@ module.exports = {
   editUser,
   editUserNotification,
   disableUser,
+  validateUser,
 };

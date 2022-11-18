@@ -10,6 +10,7 @@ const {
   signUp,
   detailsUser,
   login,
+  validateUser,
 } = require('../controllers/userController');
 const { validateLoggedUser } = require('../middlewares/auth');
 
@@ -21,6 +22,7 @@ router.post('/signup', signUp); // Sign up
 router.get('/me', validateLoggedUser, detailsUser); // Get details
 router.put('/me', validateLoggedUser, editUser); // Edit a user
 router.put('/me/notifications', validateLoggedUser, editUserNotification); // Edit notifications
+router.put('/validate', validateUser)
 
 /*
  * Admin endpoints *
