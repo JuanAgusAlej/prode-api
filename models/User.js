@@ -10,7 +10,7 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
-  uidGoogle: {
+  uid: {
     type: String,
     required: true,
   },
