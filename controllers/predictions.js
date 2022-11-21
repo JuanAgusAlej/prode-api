@@ -1,8 +1,9 @@
-const { User, Match } = require("../models");
-const { createPred } = require("../services/predictions");
+const { User, Match } = require('../models');
+const { createPred } = require('../services/predictions');
 
 const generatePrediction = async (req, res) => {
-  const { goalsA, goalsB, pick, matchId, userId } = req.body;
+  const { goalsA, goalsB, pick, matchId } = req.body;
+  const userId = req.user.id;
   //hacer validations
   try {
     const user = await User.findById(userId); //usar service de user
