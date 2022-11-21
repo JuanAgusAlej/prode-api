@@ -15,6 +15,9 @@ class Server {
     // Rutas
     this.routes();
 
+    // Error middleware
+    this.errorMiddleware();
+
     this.conectarDB();
   }
 
@@ -38,6 +41,14 @@ class Server {
 
   routes() {
     this.app.use('/api', routes);
+  }
+
+  errorMiddleware() {
+    this.app.use((err, req, res, next) => {
+      console.log('ERROR');
+      console.log(err);
+      res.status(500).send('An error has ocurred');
+    });
   }
 
   listen() {
