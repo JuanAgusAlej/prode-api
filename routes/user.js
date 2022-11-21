@@ -10,9 +10,8 @@ const {
   signUp,
   detailsUser,
   login,
-  validateUser,
 } = require('../controllers/userController');
-const { validateLoggedUser } = require('../middlewares/auth');
+const { validateLoggedUser, validateAdmin } = require('../middlewares/auth');
 
 /*
  * User endpoints *
@@ -20,15 +19,15 @@ const { validateLoggedUser } = require('../middlewares/auth');
 router.post('/login', login); // Login
 router.post('/signup', signUp); // Sign up
 router.get('/me', validateLoggedUser, detailsUser); // Get details
-router.put('/me', validateLoggedUser, editUser); // Edit a user
+router.put('/me', validateLoggedUser, editUser); // Edit user
 router.put('/me/notifications', validateLoggedUser, editUserNotification); // Edit notifications
 
 /*
  * Admin endpoints *
  */
 
-router.get('/', getAllUsers); // Get all users
-router.get('/:id', getUser); // Get a user
-router.delete('/:id', disableUser); // Disable a user
+router.get('/', validateAdmin, getAllUsers); // Get all users
+router.get('/:id', validateAdmin, getUser); // Get a user
+router.delete('/:id', validateAdmin, disableUser); // Disable a user
 
 module.exports = router;

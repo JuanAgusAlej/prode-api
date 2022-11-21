@@ -8,20 +8,21 @@ const {
 } = require('../controllers/matchController');
 
 const router = express.Router();
+const { validateAdmin, validateLoggedUser } = require('../middlewares/auth');
 
 // Get all matches
-router.get('/', getAllMatches);
+router.get('/', validateLoggedUser, getAllMatches);
 
 // Get a match
-router.get('/:id', getMatch);
+router.get('/:id', validateLoggedUser, getMatch);
 
 // Add a match
-router.post('/', addMatch);
+router.post('/', validateAdmin, addMatch);
 
 // Update a match
-router.put('/:id', editMatch);
+router.put('/:id', validateAdmin, editMatch);
 
 // Delete a match
-router.delete('/:id', deleteMatch);
+router.delete('/:id', validateAdmin, deleteMatch);
 
 module.exports = router;

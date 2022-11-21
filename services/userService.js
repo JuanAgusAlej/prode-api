@@ -5,11 +5,11 @@ const getAll = () => {
   return User.find().populate('');
 };
 
-const getById = id => {
+const getById = (id) => {
   return User.findById(id);
 };
 
-const login = async uidGoogle => {
+const login = async (uidGoogle) => {
   const user = await User.findOne({ uidGoogle })
     .populate('notifications', 'email push -_id')
     .populate('predictionsId');
@@ -34,6 +34,7 @@ const login = async uidGoogle => {
     id: user.id,
     uidGoogle: user.uidGoogle,
     email: user.email,
+    role: user.role,
     validated: user.validated,
   };
   const token = generateToken(tokenPayload);
@@ -43,7 +44,7 @@ const login = async uidGoogle => {
   };
 };
 
-const signUp = async data => {
+const signUp = async (data) => {
   const region = 'Argentina'; // Hardcoded temporarily
   const alias = data.alias ? data.alias : data.name;
   const user = await User.create({ ...data, alias, region });
@@ -53,7 +54,7 @@ const signUp = async data => {
   return user;
 };
 
-const getLoggedUser = async id => {
+const getLoggedUser = async (id) => {
   const user = await User.findById(id)
     .populate('notifications', 'email push -_id')
     .populate('predictionsId');
@@ -87,7 +88,7 @@ const updateNotifications = async (id, data) => {
   });
 };
 
-const deleteOne = id => {
+const deleteOne = (id) => {
   return User.findByIdAndUpdate(id, { state: false });
 };
 
