@@ -11,7 +11,7 @@ const getAllTournaments = async (req, res, next) => {
 
 const getTournament = async (req, res, next) => {
   try {
-    const tournament = await tournamentService.getById(req.params.id);
+    const tournament = await tournamentService.getById(req.params.tournamentId);
     res.send(tournament);
   } catch (e) {
     next(e);
@@ -55,15 +55,18 @@ const editTournament = async (req, res, next) => {
       region,
     } = req.body;
 
-    const ModifiedTournament = await tournamentService.update(req.params.id, {
-      name,
-      matchesId,
-      quantityTeams,
-      predictionResultPoints,
-      predictionGoalsPoints,
-      prizes,
-      region,
-    });
+    const ModifiedTournament = await tournamentService.update(
+      req.params.tournamentId,
+      {
+        name,
+        matchesId,
+        quantityTeams,
+        predictionResultPoints,
+        predictionGoalsPoints,
+        prizes,
+        region,
+      }
+    );
     res.send(ModifiedTournament);
   } catch (e) {
     next(e);
@@ -72,7 +75,7 @@ const editTournament = async (req, res, next) => {
 
 const deleteTournament = async (req, res, next) => {
   try {
-    await tournamentService.deleteOne(req.params.id);
+    await tournamentService.deleteOne(req.params.tournamentId);
     res.sendStatus(204);
   } catch (e) {
     next(e);

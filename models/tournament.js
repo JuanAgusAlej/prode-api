@@ -5,11 +5,13 @@ const tournamentSchema = new Schema({
     type: String,
     required: true,
   },
-  matchesId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Match',
-    required: true,
-  },
+  matchesId: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Match',
+      required: true,
+    },
+  ],
   quantityTeams: {
     type: Number,
     required: true,

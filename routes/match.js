@@ -7,22 +7,22 @@ const {
   deleteMatch,
 } = require('../controllers/matchController');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const { validateAdmin, validateLoggedUser } = require('../middlewares/auth');
 
 // Get all matches
 router.get('/', validateLoggedUser, getAllMatches);
 
 // Get a match
-router.get('/:id', validateLoggedUser, getMatch);
+router.get('/:matchId', validateLoggedUser, getMatch);
 
 // Add a match
 router.post('/', validateAdmin, addMatch);
 
 // Update a match
-router.put('/:id', validateAdmin, editMatch);
+router.put('/:matchId', validateAdmin, editMatch);
 
 // Delete a match
-router.delete('/:id', validateAdmin, deleteMatch);
+router.delete('/:matchId', validateAdmin, deleteMatch);
 
 module.exports = router;
