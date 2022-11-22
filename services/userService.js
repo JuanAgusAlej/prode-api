@@ -9,8 +9,8 @@ const getById = (id) => {
   return User.findById(id);
 };
 
-const login = async (uidGoogle) => {
-  const user = await User.findOne({ uidGoogle })
+const login = async (uid) => {
+  const user = await User.findOne({ uid })
     .populate('notifications', 'email push -_id')
     .populate('predictionsId');
   if (!user) return;
@@ -18,7 +18,7 @@ const login = async (uidGoogle) => {
     id: user.id,
     name: user.name,
     alias: user.alias,
-    uidGoogle: user.uidGoogle,
+    uid: user.uid,
     points: user.points,
     email: user.email,
     region: user.region,
@@ -32,7 +32,7 @@ const login = async (uidGoogle) => {
 
   const tokenPayload = {
     id: user.id,
-    uidGoogle: user.uidGoogle,
+    uid: user.uid,
     email: user.email,
     role: user.role,
     validated: user.validated,
@@ -63,7 +63,7 @@ const getLoggedUser = async (id) => {
     id: user.id,
     name: user.name,
     alias: user.alias,
-    uidGoogle: user.uidGoogle,
+    uid: user.uid,
     points: user.points,
     email: user.email,
     region: user.region,
