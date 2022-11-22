@@ -9,21 +9,26 @@ const {
   deleteTournament,
 } = require('../controllers/tournamentController');
 
+const matchRoutes = require('./match');
+
 const { validateLoggedUser, validateAdmin } = require('../middlewares/auth');
 
 // Get all tournaments
 router.get('/', validateLoggedUser, getAllTournaments);
 
 // Get a tournament
-router.get('/:id', validateLoggedUser, getTournament);
+router.get('/:tournamentId', validateLoggedUser, getTournament);
 
 // Add a tournament
 router.post('/', validateAdmin, addTournament);
 
 // Update a tournament
-router.put('/:id', validateAdmin, editTournament);
+router.put('/:tournamentId', validateAdmin, editTournament);
 
 // Delete a tournament
-router.delete('/:id', validateAdmin, deleteTournament);
+router.delete('/:tournamentId', validateAdmin, deleteTournament);
+
+// Matches
+router.use('/:tournamentId/match', matchRoutes);
 
 module.exports = router;

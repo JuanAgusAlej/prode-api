@@ -17,6 +17,7 @@ const matchSchema = new Schema({
   teamBId: {
     type: Schema.Types.ObjectId,
     ref: 'Team',
+    required: true,
   },
   goalsB: {
     type: Number,
@@ -25,6 +26,9 @@ const matchSchema = new Schema({
   result: {
     type: String,
     default: true,
+  },
+  instance: {
+    type: String,
   },
   predictionsId: [
     {
