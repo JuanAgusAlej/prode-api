@@ -33,7 +33,14 @@ const addMatch = async (req, res, next) => {
 };
 const editMatch = async (req, res, next) => {
   try {
-    const { date, teamAId, goalsA, teamBId, goalsB, result } = req.body;
+    const {
+      date,
+      teamAId,
+      goalsA,
+      teamBId,
+      goalsB,
+      result,
+    } = req.body;
     const ModifiedMatch = await matchService.update(req.params.id, {
       date,
       teamAId,

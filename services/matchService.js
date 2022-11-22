@@ -4,11 +4,11 @@ const getAll = () => {
   return Match.find();
 };
 
-const getById = (id) => {
+const getById = id => {
   return Match.findById(id);
 };
 
-const add = (data) => {
+const add = data => {
   return Match.create(data);
 };
 
@@ -16,8 +16,14 @@ const update = (id, data) => {
   return Match.findByIdAndUpdate(id, data, { new: true });
 };
 
-const deleteOne = (id) => {
+const deleteOne = id => {
   return Match.findByIdAndDelete(id);
 };
 
-module.exports = { getAll, getById, add, update, deleteOne };
+module.exports = {
+  getAll,
+  getById,
+  add,
+  update,
+  deleteOne,
+};

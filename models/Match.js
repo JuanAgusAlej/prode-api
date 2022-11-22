@@ -17,6 +17,7 @@ const matchSchema = new Schema({
   teamBId: {
     type: Schema.Types.ObjectId,
     ref: 'Team',
+    required: true,
   },
   goalsB: {
     type: Number,
