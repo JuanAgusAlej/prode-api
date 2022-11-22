@@ -31,8 +31,8 @@ const disableUser = async (req, res, next) => {
 // User
 const login = async (req, res, next) => {
   try {
-    const { uidGoogle } = req.body;
-    const user = await userService.login(uidGoogle);
+    const { uid } = req.body;
+    const user = await userService.login(uid);
     if (user) {
       res.send(user);
     } else {
@@ -45,20 +45,12 @@ const login = async (req, res, next) => {
 
 const signUp = async (req, res, next) => {
   try {
-    const {
-      displayName: name,
-      alias,
-      uid: uidGoogle,
-      email,
-      photo: avatar,
-    } = req.body;
-
     const user = await userService.signUp({
-      name,
-      alias,
-      uidGoogle,
-      email,
-      avatar,
+      name: req.body.name,
+      alias: req.body.alias,
+      uid: req.body.uid,
+      email: req.body.email,
+      avatar: req.body.avatar,
     });
     res.status(201).send(user);
   } catch (e) {
@@ -104,7 +96,7 @@ const editUserNotification = async (req, res, next) => {
       {
         email,
         push,
-      },
+      }
     );
     res.send(notificationsModified);
   } catch (e) {
