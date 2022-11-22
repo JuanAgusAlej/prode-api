@@ -4,10 +4,13 @@ const validateLoggedUser = (req, res, next) => {
   const token = req.header('token');
   if (!token) return res.sendStatus(401);
 
-  const { user } = validateToken(token);
-  if (!user) return res.sendStatus(401);
-
-  req.user = user;
+  try {
+    const { user } = validateToken(token);
+    if (!user) return res.sendStatus(401);
+    req.user = user;
+  } catch (e) {
+    return res.sendStatus(401);
+  }
 
   next();
 };
