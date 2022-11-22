@@ -20,4 +20,10 @@ const deleteOne = (id) => {
   return Match.findByIdAndDelete(id);
 };
 
-module.exports = { getAll, getById, add, update, deleteOne };
+module.exports = {
+  getAll,
+  getById,
+  add,
+  update,
+  deleteOne,
+};
