@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const {
   sendConfirmationEmail,
@@ -6,4 +7,4 @@ const {
 
 router.post('/', sendConfirmationEmail);
 
-module.exports = router
+module.exports = router;

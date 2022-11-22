@@ -1,13 +1,14 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
+
 const predictions = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   matchId: {
     type: Schema.Types.ObjectId,
-    ref: "Match",
+    ref: 'Match',
     required: true,
   },
   goalsA: {
@@ -32,6 +33,6 @@ const predictions = new Schema({
   },
 });
 
-const Prediction = model("Prediction", predictions);
+const Prediction = model('Prediction', predictions);
 
 module.exports = Prediction;

@@ -36,4 +36,10 @@ const deleteOne = async (tournamentId, matchId) => {
   return match;
 };
 
-module.exports = { getAll, getById, add, update, deleteOne };
+module.exports = {
+  getAll,
+  getById,
+  add,
+  update,
+  deleteOne,
+};
