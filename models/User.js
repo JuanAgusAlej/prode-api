@@ -74,7 +74,8 @@ userSchema.methods.getPoints = async function () {
       },
     },
   ]);
-  return points[0].points;
+
+  return points[0]?.points || 0;
 };
 
 const User = model('User', userSchema);
