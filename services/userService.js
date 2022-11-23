@@ -49,10 +49,21 @@ const signUp = async (data) => {
   const region = 'Argentina'; // Hardcoded temporarily
   const alias = data.alias ? data.alias : data.name;
   const user = await User.create({ ...data, alias, region });
+  const tokenPayload = {
+    id: user.id,
+    uid: user.uid,
+    email: user.email,
+    role: user.role,
+    validated: user.validated,
+  };
+  const token = generateToken(tokenPayload);
   const notification = await Notification.create({ userId: user.id });
   user.notifications = notification.id;
   await user.save();
-  return user;
+  return {
+    user,
+    token,
+  };
 };
 
 const getLoggedUser = async (id) => {
