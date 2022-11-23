@@ -34,6 +34,7 @@ const login = async (uid) => {
     id: user.id,
     uid: user.uid,
     email: user.email,
+    region: user.region,
     role: user.role,
     validated: user.validated,
   };

@@ -25,7 +25,11 @@ const matchSchema = new Schema({
   },
   result: {
     type: String,
-    default: null,
+    enum: ['PENDING', 'WON_A', 'WON_B', 'DRAW'],
+    default: 'PENDING',
+  },
+  instance: {
+    type: String,
   },
   predictionsId: [
     {

@@ -4,26 +4,24 @@ const router = express.Router();
 const {
   getAllTournaments,
   getTournament,
+  getLeaderBoard,
   addTournament,
   editTournament,
   deleteTournament,
 } = require('../controllers/tournamentController');
 
+const matchRoutes = require('./match');
+
 const { validateLoggedUser, validateAdmin } = require('../middlewares/auth');
 
-// Get all tournaments
-router.get('/', validateLoggedUser, getAllTournaments);
+router.get('/', validateLoggedUser, getAllTournaments); // Get all tournaments
+router.get('/:tournamentId', validateLoggedUser, getTournament); // Get a tournament
+router.get('/:tournamentId/leaderboard', validateLoggedUser, getLeaderBoard);
 
-// Get a tournament
-router.get('/:id', validateLoggedUser, getTournament);
+router.post('/', validateAdmin, addTournament); // Add a tournament
+router.put('/:tournamentId', validateAdmin, editTournament); // Update a tournament
+router.delete('/:tournamentId', validateAdmin, deleteTournament); // Delete a tournament
 
-// Add a tournament
-router.post('/', validateAdmin, addTournament);
-
-// Update a tournament
-router.put('/:id', validateAdmin, editTournament);
-
-// Delete a tournament
-router.delete('/:id', validateAdmin, deleteTournament);
+router.use('/:tournamentId/match', matchRoutes); // Matches
 
 module.exports = router;
