@@ -12,10 +12,10 @@ const {
   login,
 } = require('../controllers/userController');
 const { validateLoggedUser, validateAdmin } = require('../middlewares/auth');
+const { validateMongoId } = require('../validators/mongoValidator');
 const {
   validateSignUp,
   validateLogin,
-  validateMongoId,
 } = require('../validators/userValidator');
 
 /*

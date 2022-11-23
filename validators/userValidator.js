@@ -25,15 +25,7 @@ const validateLogin = [
   },
 ];
 
-const validateMongoId = [
-  check('id').notEmpty().isMongoId(),
-  (req, res, next) => {
-    validateResult(req, res, next);
-  },
-];
-
 module.exports = {
   validateSignUp,
   validateLogin,
-  validateMongoId,
 };
