@@ -9,6 +9,15 @@ const getAllTournaments = async (req, res, next) => {
   }
 };
 
+const getActiveTournament = async (req, res, next) => {
+  try {
+    const tournament = await tournamentService.getActive();
+    res.send(tournament);
+  } catch (e) {
+    next(e);
+  }
+};
+
 const getTournament = async (req, res, next) => {
   try {
     const tournament = await tournamentService.getById(req.params.tournamentId);
@@ -99,6 +108,7 @@ const deleteTournament = async (req, res, next) => {
 module.exports = {
   getAllTournaments,
   getTournament,
+  getActiveTournament,
   getLeaderBoard,
   addTournament,
   editTournament,

@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getAllTournaments,
+  getActiveTournament,
   getTournament,
   getLeaderBoard,
   addTournament,
@@ -14,7 +15,8 @@ const matchRoutes = require('./match');
 
 const { validateLoggedUser, validateAdmin } = require('../middlewares/auth');
 
-router.get('/', validateLoggedUser, getAllTournaments); // Get all tournaments
+router.get('/', validateLoggedUser, getActiveTournament); // Get tournament in course
+router.get('/all', validateAdmin, getAllTournaments); // Get all tournaments
 router.get('/:tournamentId', validateLoggedUser, getTournament); // Get a tournament
 router.get('/:tournamentId/leaderboard', validateLoggedUser, getLeaderBoard);
 

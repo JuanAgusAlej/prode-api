@@ -32,6 +32,10 @@ const tournamentSchema = new Schema({
     type: String,
     required: true,
   },
+  finished: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Tournament = model('Tournament', tournamentSchema);

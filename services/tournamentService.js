@@ -6,6 +6,10 @@ const getAll = () => {
   return Tournament.find();
 };
 
+const getActive = () => {
+  return Tournament.findOne({ finished: false });
+};
+
 const getById = (id) => {
   return Tournament.findById(id);
 };
@@ -73,4 +77,12 @@ const deleteOne = (id) => {
   return Tournament.findByIdAndDelete(id);
 };
 
-module.exports = { getAll, getById, getLeaderBoard, add, update, deleteOne };
+module.exports = {
+  getAll,
+  getActive,
+  getById,
+  getLeaderBoard,
+  add,
+  update,
+  deleteOne,
+};
