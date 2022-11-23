@@ -14,12 +14,13 @@ const login = async (uid) => {
     .populate('notifications', 'email push -_id')
     .populate('predictionsId');
   if (!user) return;
+  const points = await user.getPoints();
   const userData = {
     id: user.id,
     name: user.name,
     alias: user.alias,
     uid: user.uid,
-    points: user.points,
+    points,
     email: user.email,
     region: user.region,
     role: user.role,
@@ -60,12 +61,13 @@ const getLoggedUser = async (id) => {
     .populate('notifications', 'email push -_id')
     .populate('predictionsId');
   if (!user) return;
+  const points = await user.getPoints();
   const userData = {
     id: user.id,
     name: user.name,
     alias: user.alias,
     uid: user.uid,
-    points: user.points,
+    points,
     email: user.email,
     region: user.region,
     role: user.role,
