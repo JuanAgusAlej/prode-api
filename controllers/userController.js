@@ -72,9 +72,9 @@ const editUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { validated } = req.user;
-    const { name, region, avatar } = req.body;
+    const { alias, region, avatar } = req.body;
     const data = {
-      name,
+      alias,
       region,
       avatar,
     };
@@ -96,7 +96,7 @@ const editUserNotification = async (req, res, next) => {
       {
         email,
         push,
-      },
+      }
     );
     res.send(notificationsModified);
   } catch (e) {
