@@ -13,7 +13,7 @@ const emailSenderRoutes = require('./emailSender');
 /* add routes */
 router.use('/tournament', tournamentRoutes);
 router.use('/teams', teamsRoutes);
-router.use('/predi', predictionRoute);
+router.use('/prediction', predictionRoute);
 router.use('/roles', rolesRoutes);
 router.use('/user', userRoutes);
 router.use('/email', emailSenderRoutes);

@@ -18,6 +18,20 @@ const getTournament = async (req, res, next) => {
   }
 };
 
+const getLeaderBoard = async (req, res, next) => {
+  try {
+    const { region } = req.user;
+    const { tournamentId } = req.params;
+    const leaderboard = await tournamentService.getLeaderBoard(
+      tournamentId,
+      region
+    );
+    res.send(leaderboard);
+  } catch (e) {
+    next(e);
+  }
+};
+
 const addTournament = async (req, res, next) => {
   try {
     const {
@@ -85,6 +99,7 @@ const deleteTournament = async (req, res, next) => {
 module.exports = {
   getAllTournaments,
   getTournament,
+  getLeaderBoard,
   addTournament,
   editTournament,
   deleteTournament,
