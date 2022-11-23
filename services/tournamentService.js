@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const { User, Prediction } = require('../models');
 const Tournament = require('../models/tournament');
 
@@ -11,10 +12,25 @@ const getById = (id) => {
 
 const getLeaderBoard = async (tournamentId, region) => {
   const users = await User.find({ region }).distinct('_id');
+  const matches = await Tournament.find({ id: tournamentId }).distinct(
+    'matchesId'
+  );
+
   const predictions = await Prediction.aggregate([
     {
       $match: {
-        userId: { $in: users },
+        $and: [
+          {
+            matchId: {
+              $in: matches.map((id) => new mongoose.Types.ObjectId(id)),
+            },
+          },
+          {
+            userId: {
+              $in: users.map((id) => new mongoose.Types.ObjectId(id)),
+            },
+          },
+        ],
       },
     },
     {
