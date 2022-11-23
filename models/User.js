@@ -14,10 +14,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  points: {
-    type: Number,
-    default: 0,
-  },
   email: {
     type: String,
     required: true,
@@ -57,6 +53,29 @@ const userSchema = new Schema({
     ref: 'Notification',
   },
 });
+
+// Instance methods
+userSchema.methods.getPoints = async function () {
+  const points = await model('Prediction').aggregate([
+    {
+      $match: {
+        userId: this._id,
+      },
+    },
+    {
+      $group: {
+        _id: '$userId',
+        points: { $sum: '$points' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+      },
+    },
+  ]);
+  return points[0].points;
+};
 
 const User = model('User', userSchema);
 
