@@ -25,7 +25,7 @@ const matchSchema = new Schema({
   },
   result: {
     type: String,
-    default: true,
+    default: null,
   },
   predictionsId: [
     {

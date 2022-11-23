@@ -1,10 +1,10 @@
-const { Prediction } = require("../models");
+/* eslint-disable no-underscore-dangle */
+const { Prediction } = require('../models');
 
 const createPred = async (goalsA, goalsB, pick, user, match) => {
   const newPred = new Prediction({
     goalsA,
     goalsB,
-    pick,
     matchId: match._id,
     userId: user._id,
   });

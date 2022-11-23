@@ -1,7 +1,7 @@
 const Match = require('../models/Match');
 
 const getAll = () => {
-  return Match.find();
+  return Match.find().populate(['teamAId', 'teamBId']);
 };
 
 const getById = id => {

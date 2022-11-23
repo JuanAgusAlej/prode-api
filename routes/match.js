@@ -17,7 +17,7 @@ router.get('/', validateLoggedUser, getAllMatches);
 router.get('/:id', validateLoggedUser, getMatch);
 
 // Add a match
-router.post('/', validateAdmin, addMatch);
+router.post('/', addMatch);
 
 // Update a match
 router.put('/:id', validateAdmin, editMatch);
