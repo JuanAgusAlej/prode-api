@@ -1,3 +1,4 @@
+const { User, Prediction } = require('../models');
 const Tournament = require('../models/tournament');
 
 const getAll = () => {
@@ -6,6 +7,42 @@ const getAll = () => {
 
 const getById = (id) => {
   return Tournament.findById(id);
+};
+
+const getLeaderBoard = async (tournamentId, region) => {
+  const users = await User.find({ region }).distinct('_id');
+  const predictions = await Prediction.aggregate([
+    {
+      $match: {
+        userId: { $in: users },
+      },
+    },
+    {
+      $group: {
+        _id: '$userId',
+        points: { $sum: '$points' },
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: '_id',
+        foreignField: '_id',
+        as: 'data',
+        pipeline: [
+          {
+            $project: {
+              _id: 0,
+              alias: 1,
+              avatar: 1,
+            },
+          },
+        ],
+      },
+    },
+    { $sort: { points: -1 } },
+  ]);
+  return predictions;
 };
 
 const add = (data) => {
@@ -20,4 +57,4 @@ const deleteOne = (id) => {
   return Tournament.findByIdAndDelete(id);
 };
 
-module.exports = { getAll, getById, add, update, deleteOne };
+module.exports = { getAll, getById, getLeaderBoard, add, update, deleteOne };
