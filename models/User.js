@@ -21,7 +21,11 @@ const userSchema = new Schema({
   },
   region: {
     type: String,
-    enum: ['Argentina', 'Brasil', 'Estados Unidos'],
+    enum: ['AR', 'BR', ' US'],
+    required: true,
+  },
+  timezone: {
+    type: String,
     required: true,
   },
   role: {

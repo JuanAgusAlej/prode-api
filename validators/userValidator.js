@@ -13,6 +13,22 @@ const validateSignUp = [
       if (userExists) throw new Error('Email already exists');
     }),
   check('avatar').notEmpty(),
+  check('region')
+    .exists()
+    .custom((value) => {
+      if (!['AR', 'BR', 'US'].includes(value)) {
+        throw new Error('Country not allowed');
+      }
+      return true;
+    }),
+  check('timezone').custom((value) => {
+    try {
+      Intl.DateTimeFormat(undefined, { timeZone: value });
+      return true;
+    } catch (ex) {
+      throw new Error('Timezone is not valid');
+    }
+  }),
   (req, res, next) => {
     validateResult(req, res, next);
   },
