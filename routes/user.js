@@ -16,6 +16,7 @@ const { validateMongoId } = require('../validators/mongoValidator');
 const {
   validateSignUp,
   validateLogin,
+  validateEdit,
 } = require('../validators/userValidator');
 
 /*
@@ -25,7 +26,7 @@ const {
 router.post('/login', [validateLogin], login); // Login
 router.post('/signup', [validateSignUp], signUp); // Sign up
 router.get('/me', validateLoggedUser, detailsUser); // Get details
-router.put('/me', validateLoggedUser, editUser); // Edit user
+router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
 router.put('/me/notifications', validateLoggedUser, editUserNotification); // Edit notifications
 
 /*

@@ -28,6 +28,11 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  language: {
+    type: String,
+    enum: ['ES', 'PT', 'EN'],
+    required: true,
+  },
   role: {
     type: String,
     default: 'USER_ROLE',

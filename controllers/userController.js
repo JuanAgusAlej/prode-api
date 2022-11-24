@@ -74,10 +74,10 @@ const editUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { validated } = req.user;
-    const { alias, region, avatar } = req.body;
+    const { alias, language, avatar } = req.body;
     const data = {
       alias,
-      region,
+      language,
       avatar,
     };
     if (!validated) data.validated = !validated;
