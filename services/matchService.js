@@ -1,7 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable comma-dangle */
-const { Tournament } = require('../models');
+const { default: mongoose } = require('mongoose');
+const { Tournament, Prediction } = require('../models');
 const Match = require('../models/Match');
+const { calculatePoints } = require('../utils/points');
 
 const getAll = () => {
   return Match.find().populate(['teamAId', 'teamBId']);
@@ -25,8 +27,39 @@ const update = (id, data) => {
   return Match.findByIdAndUpdate(id, data, { new: true });
 };
 
-const setResults = (id, data) => {
-  return Match.findByIdAndUpdate(id, data, { new: true });
+const setResults = async (matchId, tournamentId, data) => {
+  const match = await Match.findByIdAndUpdate(matchId, data, { new: true });
+  const tournament = await Tournament.findById(tournamentId);
+  const userPredictions = await Prediction.find({ matchId });
+
+  // Init calculator
+  const getPoints = calculatePoints(
+    match,
+    tournament.predictionResultPoints,
+    tournament.predictionGoalsPoints
+  );
+
+  const updateQuery = [];
+
+  userPredictions.forEach((prediction) => {
+    const pointsEarned = getPoints(prediction);
+    if (pointsEarned > 0) {
+      const updatePrediction = {
+        updateOne: {
+          filter: { _id: prediction._id },
+          update: {
+            state: true,
+            points: pointsEarned,
+          },
+        },
+      };
+
+      updateQuery.push(updatePrediction);
+    }
+  });
+
+  await Prediction.bulkWrite(updateQuery);
+  return match;
 };
 
 const deleteOne = async (tournamentId, matchId) => {
