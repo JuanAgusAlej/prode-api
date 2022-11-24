@@ -23,6 +23,7 @@ const login = async (uid) => {
     points,
     email: user.email,
     region: user.region,
+    timezone: user.timezone,
     role: user.role,
     state: user.state,
     avatar: user.avatar,
@@ -47,9 +48,8 @@ const login = async (uid) => {
 };
 
 const signUp = async (data) => {
-  const region = 'Argentina'; // Hardcoded temporarily
   const alias = data.alias ? data.alias : data.name;
-  const user = await User.create({ ...data, alias, region });
+  const user = await User.create({ ...data, alias });
   const tokenPayload = {
     id: user.id,
     uid: user.uid,
@@ -81,6 +81,7 @@ const getLoggedUser = async (id) => {
     points,
     email: user.email,
     region: user.region,
+    timezone: user.timezone,
     role: user.role,
     state: user.state,
     avatar: user.avatar,

@@ -51,6 +51,8 @@ const signUp = async (req, res, next) => {
       uid: req.body.uid,
       email: req.body.email,
       avatar: req.body.avatar,
+      region: req.body.region,
+      timezone: req.body.timezone,
     });
     res.status(201).send(user);
   } catch (e) {
