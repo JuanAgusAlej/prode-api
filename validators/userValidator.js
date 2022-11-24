@@ -41,7 +41,22 @@ const validateLogin = [
   },
 ];
 
+const validateEdit = [
+  check('alias').notEmpty().withMessage('Alias is required'),
+  check('language').custom((value) => {
+    if (!['ES', 'PT', 'EN'].includes(value)) {
+      throw new Error('Language is not valid');
+    }
+    return true;
+  }),
+  check('avatar').notEmpty().withMessage('Avatar is required'),
+  (req, res, next) => {
+    validateResult(req, res, next);
+  },
+];
+
 module.exports = {
   validateSignUp,
   validateLogin,
+  validateEdit,
 };

@@ -24,6 +24,7 @@ const login = async (uid) => {
     email: user.email,
     region: user.region,
     timezone: user.timezone,
+    language: user.language,
     role: user.role,
     state: user.state,
     avatar: user.avatar,
@@ -49,6 +50,14 @@ const login = async (uid) => {
 
 const signUp = async (data) => {
   const alias = data.alias ? data.alias : data.name;
+  if (data.region === 'AR') {
+    data.language = 'ES';
+  } else if (data.region === 'BR') {
+    data.language = 'PT';
+  } else {
+    data.language = 'EN';
+  }
+
   const user = await User.create({ ...data, alias });
   const tokenPayload = {
     id: user.id,
@@ -82,6 +91,7 @@ const getLoggedUser = async (id) => {
     email: user.email,
     region: user.region,
     timezone: user.timezone,
+    language: user.language,
     role: user.role,
     state: user.state,
     avatar: user.avatar,
