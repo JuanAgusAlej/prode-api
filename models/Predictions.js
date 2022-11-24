@@ -40,7 +40,6 @@ predictions.pre('save', function (next) {
     if (this.goalsA === this.goalsB) return 'DRAW';
   };
   this.pick = setPick();
-  console.log(this.pick);
   next();
 });
 
