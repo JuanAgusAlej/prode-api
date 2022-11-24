@@ -35,16 +35,27 @@ const addMatch = async (req, res, next) => {
 };
 const editMatch = async (req, res, next) => {
   try {
-    const { date, teamAId, goalsA, teamBId, goalsB, result } = req.body;
+    const { date, teamAId, teamBId } = req.body;
     const ModifiedMatch = await matchService.update(req.params.matchId, {
       date,
       teamAId,
-      goalsA,
       teamBId,
+    });
+    res.send(ModifiedMatch);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const setResults = async (req, res, next) => {
+  try {
+    const { goalsA, goalsB, result } = req.body;
+    const finishedMatch = await matchService.setResults(req.params.matchId, {
+      goalsA,
       goalsB,
       result,
     });
-    res.send(ModifiedMatch);
+    res.send(finishedMatch);
   } catch (e) {
     next(e);
   }
@@ -65,5 +76,6 @@ module.exports = {
   getMatch,
   addMatch,
   editMatch,
+  setResults,
   deleteMatch,
 };

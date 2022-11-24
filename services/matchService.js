@@ -5,7 +5,7 @@ const getAll = () => {
   return Match.find().populate(['teamAId', 'teamBId']);
 };
 
-const getById = id => {
+const getById = (id) => {
   return Match.findById(id);
 };
 
@@ -20,6 +20,10 @@ const add = async (data) => {
 };
 
 const update = (id, data) => {
+  return Match.findByIdAndUpdate(id, data, { new: true });
+};
+
+const setResults = (id, data) => {
   return Match.findByIdAndUpdate(id, data, { new: true });
 };
 
@@ -41,5 +45,6 @@ module.exports = {
   getById,
   add,
   update,
+  setResults,
   deleteOne,
 };
