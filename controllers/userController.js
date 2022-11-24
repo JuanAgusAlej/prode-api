@@ -98,7 +98,7 @@ const editUserNotification = async (req, res, next) => {
       {
         email,
         push,
-      }
+      },
     );
     res.send(notificationsModified);
   } catch (e) {

@@ -21,7 +21,7 @@ const predictions = new Schema({
   },
   pick: {
     type: String,
-    required: true,
+    enum: ['WON_A', 'WON_B', 'DRAW'],
   },
   state: {
     type: Boolean,
@@ -31,6 +31,17 @@ const predictions = new Schema({
     type: Number,
     default: 0,
   },
+});
+
+predictions.pre('save', function (next) {
+  const setPick = () => {
+    if (this.goalsA > this.goalsB) return 'WON_A';
+    if (this.goalsA < this.goalsB) return 'WON_B';
+    if (this.goalsA === this.goalsB) return 'DRAW';
+  };
+  this.pick = setPick();
+  console.log(this.pick);
+  next();
 });
 
 const Prediction = model('Prediction', predictions);
