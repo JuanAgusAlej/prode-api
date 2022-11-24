@@ -50,7 +50,8 @@ const editMatch = async (req, res, next) => {
 const setResults = async (req, res, next) => {
   try {
     const { goalsA, goalsB, result } = req.body;
-    const finishedMatch = await matchService.setResults(req.params.matchId, {
+    const { matchId, tournamentId } = req.params;
+    const finishedMatch = await matchService.setResults(matchId, tournamentId, {
       goalsA,
       goalsB,
       result,
