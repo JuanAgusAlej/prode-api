@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable comma-dangle */
 const { Tournament } = require('../models');
 const Match = require('../models/Match');
 
