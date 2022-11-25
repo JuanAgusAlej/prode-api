@@ -65,6 +65,8 @@ const signUp = async (data) => {
     email: user.email,
     role: user.role,
     validated: user.validated,
+    region: user.region,
+
   };
   const token = generateToken(tokenPayload);
   const notification = await Notification.create({ userId: user.id });
