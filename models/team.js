@@ -10,6 +10,10 @@ const teamSchema = new Schema({
     required: true,
   },
   logo: String,
+  shortName: {
+    type: String,
+    required: true,
+  }
 });
 
 const Team = model('Team', teamSchema);

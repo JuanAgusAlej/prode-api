@@ -5,10 +5,13 @@ const tournamentSchema = new Schema({
     type: String,
     required: true,
   },
-  matchesId: {
-    type: Array,
-    required: true,
-  },
+  matchesId: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Match',
+      required: true,
+    },
+  ],
   quantityTeams: {
     type: Number,
     required: true,
@@ -17,7 +20,7 @@ const tournamentSchema = new Schema({
     type: Number,
     required: true,
   },
-  preditionGoalsPoints: {
+  predictionGoalsPoints: {
     type: Number,
     required: true,
   },
@@ -28,6 +31,10 @@ const tournamentSchema = new Schema({
   region: {
     type: String,
     required: true,
+  },
+  finished: {
+    type: Boolean,
+    default: false,
   },
 });
 

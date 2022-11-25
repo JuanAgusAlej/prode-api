@@ -1,7 +1,16 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+const { Schema, model } = require('mongoose');
 
-const Predictions = new Schema({
+const predictions = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  matchId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Match',
+    required: true,
+  },
   goalsA: {
     type: Number,
     required: true,
@@ -12,7 +21,7 @@ const Predictions = new Schema({
   },
   pick: {
     type: String,
-    required: true,
+    enum: ['WON_A', 'WON_B', 'DRAW'],
   },
   state: {
     type: Boolean,
@@ -24,4 +33,16 @@ const Predictions = new Schema({
   },
 });
 
-module.exports = Predictions;
+predictions.pre('save', function (next) {
+  const setPick = () => {
+    if (this.goalsA > this.goalsB) return 'WON_A';
+    if (this.goalsA < this.goalsB) return 'WON_B';
+    if (this.goalsA === this.goalsB) return 'DRAW';
+  };
+  this.pick = setPick();
+  next();
+});
+
+const Prediction = model('Prediction', predictions);
+
+module.exports = Prediction;

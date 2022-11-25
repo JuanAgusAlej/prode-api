@@ -2,16 +2,21 @@
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../config/config');
+const routes = require('../routes');
+
 require('dotenv').config();
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    // this.usuariosPath = "/api/usuarios";
+
     this.middleware();
     // Rutas
     this.routes();
+
+    // Error middleware
+    this.errorMiddleware();
 
     this.conectarDB();
   }
@@ -35,12 +40,20 @@ class Server {
   }
 
   routes() {
-    // this.app.use(this.usuariosPath, require("../routes/usuarios.js"));
+    this.app.use('/api', routes);
+  }
+
+  errorMiddleware() {
+    this.app.use((err, req, res, next) => {
+      console.log('ERROR');
+      console.log(err);
+      res.status(500).send('An error has ocurred');
+    });
   }
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log(`Example app listening on port ${this.port}`);
+      console.log(`Prode app listening on port ${this.port}`);
     });
   }
 }
