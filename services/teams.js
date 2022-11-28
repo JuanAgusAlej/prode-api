@@ -1,17 +1,21 @@
 const { Team } = require('../models');
 
-const post = team => {
+const post = (team) => {
   const newTeam = new Team({
     name: team.name,
     country: team.country,
-    logo: team.logo || null,
-    shortName: team.shortName
+    logo: team.logo,
+    shortName: team.shortName,
   });
   return newTeam.save();
 };
 
-const getOne = id => {
+const getOne = (id) => {
   return Team.findById(id);
+};
+
+const getAll = () => {
+  return Team.find({});
 };
 
 const update = (id, data) => {
@@ -22,8 +26,8 @@ const update = (id, data) => {
   );
 };
 
-const remove = id => {
-    return Team.findByIdAndDelete(id)
-}
+const remove = (id) => {
+  return Team.findByIdAndDelete(id);
+};
 
-module.exports = { post, getOne, update, remove };
+module.exports = { post, getOne, getAll, update, remove };
