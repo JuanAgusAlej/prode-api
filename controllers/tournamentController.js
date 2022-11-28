@@ -11,7 +11,8 @@ const getAllTournaments = async (req, res, next) => {
 
 const getActiveTournament = async (req, res, next) => {
   try {
-    const tournament = await tournamentService.getActive();
+    const { region } = req.user;
+    const tournament = await tournamentService.getActive(region);
     res.send(tournament);
   } catch (e) {
     next(e);
@@ -33,7 +34,7 @@ const getLeaderBoard = async (req, res, next) => {
     const { tournamentId } = req.params;
     const leaderboard = await tournamentService.getLeaderBoard(
       tournamentId,
-      region,
+      region
     );
     res.send(leaderboard);
   } catch (e) {
@@ -88,7 +89,7 @@ const editTournament = async (req, res, next) => {
         predictionGoalsPoints,
         prizes,
         region,
-      },
+      }
     );
     res.send(ModifiedTournament);
   } catch (e) {

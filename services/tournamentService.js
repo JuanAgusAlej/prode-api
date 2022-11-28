@@ -6,8 +6,8 @@ const getAll = () => {
   return Tournament.find();
 };
 
-const getActive = () => {
-  return Tournament.findOne({ finished: false });
+const getActive = (region) => {
+  return Tournament.findOne({ finished: false, region });
 };
 
 const getById = (id) => {
