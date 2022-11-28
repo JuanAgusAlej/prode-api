@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const express = require('express');
 
 const router = express.Router();
@@ -14,16 +15,38 @@ const {
 const matchRoutes = require('./match');
 
 const { validateLoggedUser, validateAdmin } = require('../middlewares/auth');
+const {
+  validateTournamentId,
+  validateCreate,
+  validateUpdate,
+} = require('../validators/tournamentValidator');
 
 router.get('/', validateLoggedUser, getActiveTournament); // Get tournament in course
 router.get('/all', validateAdmin, getAllTournaments); // Get all tournaments
-router.get('/:tournamentId', validateLoggedUser, getTournament); // Get a tournament
-router.get('/:tournamentId/leaderboard', validateLoggedUser, getLeaderBoard);
 
-router.post('/', validateAdmin, addTournament); // Add a tournament
-router.put('/:tournamentId', validateAdmin, editTournament); // Update a tournament
-router.delete('/:tournamentId', validateAdmin, deleteTournament); // Delete a tournament
+// Get a tournament
+router.get(
+  '/:tournamentId',
+  [validateLoggedUser, validateTournamentId],
+  getTournament
+);
 
-router.use('/:tournamentId/match', matchRoutes); // Matches
+router.get(
+  '/:tournamentId/leaderboard',
+  [validateLoggedUser, validateTournamentId],
+  getLeaderBoard
+);
+
+router.post('/', [validateAdmin, validateCreate], addTournament); // Add a tournament
+router.put('/:tournamentId', [validateUpdate, validateAdmin], editTournament); // Update a tournament
+
+// Delete a tournament
+router.delete(
+  '/:tournamentId',
+  [validateTournamentId, validateAdmin],
+  deleteTournament
+);
+
+router.use('/:tournamentId/match', [validateTournamentId], matchRoutes); // Matches
 
 module.exports = router;

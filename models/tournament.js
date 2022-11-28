@@ -12,10 +12,13 @@ const tournamentSchema = new Schema({
       required: true,
     },
   ],
-  quantityTeams: {
-    type: Number,
-    required: true,
-  },
+  teamsId: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Team',
+      required: true,
+    },
+  ],
   predictionResultPoints: {
     type: Number,
     required: true,
@@ -30,6 +33,7 @@ const tournamentSchema = new Schema({
   },
   region: {
     type: String,
+    enum: ['AR', 'BR', 'US'],
     required: true,
   },
   finished: {
