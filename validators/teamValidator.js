@@ -1,6 +1,5 @@
 const { check, oneOf } = require('express-validator');
 const { validateResult } = require('../utils/validate');
-const { Team } = require('../models');
 
 const validateCreate = [
   check('name').notEmpty().withMessage('Name is required'),
