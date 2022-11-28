@@ -9,13 +9,15 @@ const teamSchema = new Schema({
     type: String,
     required: true,
   },
-  logo: String,
+  logo: {
+    type: String,
+    required: true,
+  },
   shortName: {
     type: String,
     required: true,
-  }
+  },
 });
 
 const Team = model('Team', teamSchema);
-
 module.exports = Team;
