@@ -1,4 +1,4 @@
-const { User, Notification } = require('../models');
+const { User, Setting } = require('../models');
 const { generateToken } = require('../utils/tokens');
 
 const getAll = () => {
@@ -11,7 +11,7 @@ const getById = (id) => {
 
 const login = async (uid) => {
   const user = await User.findOne({ uid })
-    .populate('notifications', 'email push -_id')
+    .populate('settings', 'email push language -_id')
     .populate('predictionsId');
   if (!user) return;
   const points = await user.getPoints();
@@ -24,13 +24,16 @@ const login = async (uid) => {
     email: user.email,
     region: user.region,
     timezone: user.timezone,
-    language: user.language,
+    language: user.settings.language,
     role: user.role,
     state: user.state,
     avatar: user.avatar,
     validated: user.validated,
     predictions: user.predictionsId,
-    notifications: user.notifications,
+    notifications: {
+      email: user.settings.email,
+      push: user.settings.push,
+    },
   };
 
   const tokenPayload = {
@@ -40,6 +43,7 @@ const login = async (uid) => {
     region: user.region,
     role: user.role,
     validated: user.validated,
+    language: user.settings.language,
   };
   const token = generateToken(tokenPayload);
   return {
@@ -49,13 +53,14 @@ const login = async (uid) => {
 };
 
 const signUp = async (data) => {
+  let language;
   const alias = data.alias ? data.alias : data.name;
   if (data.region === 'AR') {
-    data.language = 'ES';
+    language = 'ES';
   } else if (data.region === 'BR') {
-    data.language = 'PT';
+    language = 'PT';
   } else {
-    data.language = 'EN';
+    language = 'EN';
   }
 
   const user = await User.create({ ...data, alias });
@@ -66,11 +71,11 @@ const signUp = async (data) => {
     role: user.role,
     validated: user.validated,
     region: user.region,
-
+    language,
   };
   const token = generateToken(tokenPayload);
-  const notification = await Notification.create({ userId: user.id });
-  user.notifications = notification.id;
+  const setting = await Setting.create({ userId: user.id, language });
+  user.settings = setting.id;
   await user.save();
   return {
     user,
@@ -80,7 +85,7 @@ const signUp = async (data) => {
 
 const getLoggedUser = async (id) => {
   const user = await User.findById(id)
-    .populate('notifications', 'email push -_id')
+    .populate('settings', 'email push language -_id')
     .populate('predictionsId');
   if (!user) return;
   const points = await user.getPoints();
@@ -93,13 +98,16 @@ const getLoggedUser = async (id) => {
     email: user.email,
     region: user.region,
     timezone: user.timezone,
-    language: user.language,
+    language: user.settings.language,
     role: user.role,
     state: user.state,
     avatar: user.avatar,
     validated: user.validated,
     predictions: user.predictionsId,
-    notifications: user.notifications,
+    notifications: {
+      email: user.settings.email,
+      push: user.settings.push,
+    },
   };
   return userData;
 };
@@ -108,9 +116,9 @@ const update = (id, data) => {
   return User.findByIdAndUpdate(id, data, { new: true });
 };
 
-const updateNotifications = async (id, data) => {
+const updateSettings = async (id, data) => {
   const user = await User.findById(id);
-  return Notification.findByIdAndUpdate(user.notifications, data, {
+  return Setting.findByIdAndUpdate(user.settings, data, {
     new: true,
   });
 };
@@ -126,6 +134,6 @@ module.exports = {
   signUp,
   getLoggedUser,
   update,
-  updateNotifications,
+  updateSettings,
   deleteOne,
 };

@@ -74,10 +74,9 @@ const editUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { validated } = req.user;
-    const { alias, language, avatar } = req.body;
+    const { alias, avatar } = req.body;
     const data = {
       alias,
-      language,
       avatar,
     };
     if (!validated) data.validated = !validated;
@@ -89,18 +88,16 @@ const editUser = async (req, res, next) => {
   }
 };
 
-const editUserNotification = async (req, res, next) => {
+const editUserSettings = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { email, push } = req.body;
-    const notificationsModified = await userService.updateNotifications(
-      userId,
-      {
-        email,
-        push,
-      },
-    );
-    res.send(notificationsModified);
+    const { email, push, language } = req.body;
+    const settingsModified = await userService.updateSettings(userId, {
+      email,
+      push,
+      language,
+    });
+    res.send(settingsModified);
   } catch (e) {
     next(e);
   }
@@ -113,6 +110,6 @@ module.exports = {
   signUp,
   detailsUser,
   editUser,
-  editUserNotification,
+  editUserSettings,
   disableUser,
 };
