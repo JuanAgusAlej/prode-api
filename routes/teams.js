@@ -14,7 +14,7 @@ const { validateMongoId } = require('../validators/mongoValidator');
 const {
   validateCreate,
   validateUpdate,
-} = require('../validators/teamValidations');
+} = require('../validators/teamValidator');
 
 router.get('/', [validateAdmin], getAllTeams);
 router.get('/:id', [validateLoggedUser, validateMongoId], getTeam);
