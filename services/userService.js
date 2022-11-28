@@ -1,4 +1,5 @@
 const { User, Setting } = require('../models');
+const { newLog } = require('../utils/logs');
 const { generateToken } = require('../utils/tokens');
 
 const getAll = () => {
@@ -13,6 +14,7 @@ const login = async (uid) => {
   const user = await User.findOne({ uid })
     .populate('settings', 'email push language -_id')
     .populate('predictionsId');
+
   if (!user) return;
   const points = await user.getPoints();
   const userData = {
@@ -46,10 +48,19 @@ const login = async (uid) => {
     language: user.settings.language,
   };
   const token = generateToken(tokenPayload);
+
+  // New log -> LOG_IN
+  await newLog(user.id, 'LOG_IN');
+
   return {
     user: userData,
     token,
   };
+};
+
+const logout = async (userId) => {
+  // New log -> LOG_OUT
+  await newLog(userId, 'LOG_OUT');
 };
 
 const signUp = async (data) => {
@@ -77,6 +88,10 @@ const signUp = async (data) => {
   const setting = await Setting.create({ userId: user.id, language });
   user.settings = setting.id;
   await user.save();
+
+  // New log -> SIGN_UP
+  await newLog(user.id, 'SIGN_UP');
+
   return {
     user,
     token,
@@ -112,12 +127,25 @@ const getLoggedUser = async (id) => {
   return userData;
 };
 
-const update = (id, data) => {
+const update = async (user, data) => {
+  const { id, validated } = user;
+  // New log -> EDIT_PROFILE
+  await newLog(id, 'EDIT_PROFILE', data);
+
+  if (validated !== data.validated) {
+    // New log -> VALIDATE_EMAIL
+    await newLog(id, 'VALIDATE_EMAIL');
+  }
+
   return User.findByIdAndUpdate(id, data, { new: true });
 };
 
 const updateSettings = async (id, data) => {
   const user = await User.findById(id);
+
+  // New log -> EDIT_SETTINGS
+  await newLog(id, 'EDIT_SETTINGS', data);
+
   return Setting.findByIdAndUpdate(user.settings, data, {
     new: true,
   });
@@ -131,6 +159,7 @@ module.exports = {
   getAll,
   getById,
   login,
+  logout,
   signUp,
   getLoggedUser,
   update,
