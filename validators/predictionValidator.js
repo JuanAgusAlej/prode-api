@@ -5,8 +5,11 @@ const { Match } = require('../models');
 const validatePrediction = [
   check(['goalsA', 'goalsB'])
     .exists()
+    .withMessage('Goal prediction is required')
+    .bail()
     .isInt()
     .withMessage('Goal prediction must be a number')
+    .bail()
     .isInt({ min: 0 })
     .withMessage('Goal prediction cannot be a negative number'),
   check('matchId')
