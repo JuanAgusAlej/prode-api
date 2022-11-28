@@ -29,11 +29,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  language: {
-    type: String,
-    enum: ['ES', 'PT', 'EN'],
-    required: true,
-  },
   role: {
     type: String,
     default: 'USER_ROLE',
@@ -46,6 +41,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  pushId: {
+    type: String,
+  },
   predictionsId: [
     {
       type: Schema.Types.ObjectId,
@@ -54,13 +52,13 @@ const userSchema = new Schema({
       default: null,
     },
   ],
+  settings: {
+    type: Schema.Types.ObjectId,
+    ref: 'Setting',
+  },
   validated: {
     type: Boolean,
     default: false,
-  },
-  notifications: {
-    type: Schema.Types.ObjectId,
-    ref: 'Notification',
   },
 });
 

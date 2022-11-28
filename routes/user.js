@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const express = require('express');
 
 const router = express.Router();
@@ -5,7 +6,7 @@ const {
   getAllUsers,
   getUser,
   editUser,
-  editUserNotification,
+  editUserSettings,
   disableUser,
   signUp,
   detailsUser,
@@ -17,6 +18,7 @@ const {
   validateSignUp,
   validateLogin,
   validateEdit,
+  validateEditSettings,
 } = require('../validators/userValidator');
 
 /*
@@ -27,7 +29,13 @@ router.post('/login', [validateLogin], login); // Login
 router.post('/signup', [validateSignUp], signUp); // Sign up
 router.get('/me', validateLoggedUser, detailsUser); // Get details
 router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
-router.put('/me/notifications', validateLoggedUser, editUserNotification); // Edit notifications
+
+// Edit notifications
+router.put(
+  '/me/settings',
+  [validateEditSettings, validateLoggedUser],
+  editUserSettings
+);
 
 /*
  * Admin endpoints *

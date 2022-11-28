@@ -1,4 +1,4 @@
-const { check } = require('express-validator');
+const { check, oneOf } = require('express-validator');
 const { validateResult } = require('../utils/validate');
 const { User } = require('../models');
 
@@ -43,13 +43,30 @@ const validateLogin = [
 
 const validateEdit = [
   check('alias').notEmpty().withMessage('Alias is required'),
-  check('language').custom((value) => {
-    if (!['ES', 'PT', 'EN'].includes(value)) {
-      throw new Error('Language is not valid');
-    }
-    return true;
-  }),
   check('avatar').notEmpty().withMessage('Avatar is required'),
+  (req, res, next) => {
+    validateResult(req, res, next);
+  },
+];
+
+const validateEditSettings = [
+  oneOf([
+    check('push').exists(),
+    check('email').exists(),
+    check('language').exists(),
+  ]),
+  check(['push', 'email'])
+    .optional()
+    .isBoolean()
+    .withMessage('Notification status is not invalid'),
+  check('language')
+    .optional()
+    .custom((value) => {
+      if (!['ES', 'PT', 'EN'].includes(value)) {
+        throw new Error('Language is not valid');
+      }
+      return true;
+    }),
   (req, res, next) => {
     validateResult(req, res, next);
   },
@@ -59,4 +76,5 @@ module.exports = {
   validateSignUp,
   validateLogin,
   validateEdit,
+  validateEditSettings,
 };
