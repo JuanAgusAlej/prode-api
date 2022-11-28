@@ -43,6 +43,15 @@ const login = async (req, res, next) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  try {
+    await userService.logout(req.user.id);
+    res.sendStatus(204);
+  } catch (e) {
+    next(e);
+  }
+};
+
 const signUp = async (req, res, next) => {
   try {
     const user = await userService.signUp({
@@ -72,7 +81,7 @@ const detailsUser = async (req, res, next) => {
 
 const editUser = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const user = req.user;
     const { validated } = req.user;
     const { alias, avatar } = req.body;
     const data = {
@@ -81,7 +90,7 @@ const editUser = async (req, res, next) => {
     };
     if (!validated) data.validated = !validated;
 
-    const modifiedUser = await userService.update(userId, data);
+    const modifiedUser = await userService.update(user, data);
     res.send(modifiedUser);
   } catch (e) {
     next(e);
@@ -107,6 +116,7 @@ module.exports = {
   getAllUsers,
   getUser,
   login,
+  logout,
   signUp,
   detailsUser,
   editUser,

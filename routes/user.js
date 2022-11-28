@@ -11,6 +11,7 @@ const {
   signUp,
   detailsUser,
   login,
+  logout,
 } = require('../controllers/userController');
 const { validateLoggedUser, validateAdmin } = require('../middlewares/auth');
 const { validateMongoId } = require('../validators/mongoValidator');
@@ -27,10 +28,11 @@ const {
 
 router.post('/login', [validateLogin], login); // Login
 router.post('/signup', [validateSignUp], signUp); // Sign up
+router.post('/logout', [validateLoggedUser, logout]); // Logout
 router.get('/me', validateLoggedUser, detailsUser); // Get details
 router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
 
-// Edit notifications
+// Edit settings
 router.put(
   '/me/settings',
   [validateEditSettings, validateLoggedUser],

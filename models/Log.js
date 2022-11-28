@@ -13,6 +13,9 @@ const logSchema = new Schema({
     type: String,
     required: true,
   },
+  value: {
+    type: Schema.Types.Mixed,
+  },
 });
 
 const Log = model('Log', logSchema);
