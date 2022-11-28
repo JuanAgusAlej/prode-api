@@ -28,7 +28,16 @@ const update = (id, data) => {
 };
 
 const setResults = async (matchId, tournamentId, data) => {
-  const match = await Match.findByIdAndUpdate(matchId, data, { new: true });
+  let result;
+  if (data.goalsA > data.goalsB) result = 'WON_A';
+  if (data.goalsA < data.goalsB) result = 'WON_B';
+  if (data.goalsA === data.goalsB) result = 'DRAW';
+
+  const match = await Match.findByIdAndUpdate(
+    matchId,
+    { ...data, result },
+    { new: true }
+  );
   const tournament = await Tournament.findById(tournamentId);
   const userPredictions = await Prediction.find({ matchId });
 

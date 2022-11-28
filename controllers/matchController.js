@@ -49,12 +49,11 @@ const editMatch = async (req, res, next) => {
 
 const setResults = async (req, res, next) => {
   try {
-    const { goalsA, goalsB, result } = req.body;
+    const { goalsA, goalsB } = req.body;
     const { matchId, tournamentId } = req.params;
     const finishedMatch = await matchService.setResults(matchId, tournamentId, {
       goalsA,
       goalsB,
-      result,
     });
     res.send(finishedMatch);
   } catch (e) {

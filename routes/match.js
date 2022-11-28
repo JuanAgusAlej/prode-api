@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const express = require('express');
 const {
   getAllMatches,
@@ -10,23 +11,33 @@ const {
 
 const router = express.Router({ mergeParams: true });
 const { validateAdmin, validateLoggedUser } = require('../middlewares/auth');
+const {
+  validateMatchId,
+  validateCreate,
+  validateUpdate,
+  validateSetResults,
+} = require('../validators/matchValidator');
 
 // Get all matches
 router.get('/', validateLoggedUser, getAllMatches);
 
 // Get a match
-router.get('/:matchId', validateLoggedUser, getMatch);
+router.get('/:matchId', [validateLoggedUser, validateMatchId], getMatch);
 
 // Add a match
-router.post('/', validateAdmin, addMatch);
+router.post('/', [validateAdmin, validateCreate], addMatch);
 
 // Update a match
-router.put('/:matchId', validateAdmin, editMatch);
+router.put('/:matchId', [validateAdmin, validateUpdate], editMatch);
 
 // Set results
-router.put('/:matchId/results', validateAdmin, setResults);
+router.put(
+  '/:matchId/results',
+  [validateAdmin, validateSetResults],
+  setResults
+);
 
 // Delete a match
-router.delete('/:matchId', validateAdmin, deleteMatch);
+router.delete('/:matchId', [validateAdmin, validateMatchId], deleteMatch);
 
 module.exports = router;
