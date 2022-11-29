@@ -21,7 +21,60 @@ const {
   validateUpdate,
 } = require('../validators/tournamentValidator');
 
+/**
+ * @openapi
+ * /tournament:
+ *   get:
+ *    tags:
+ *    - tournament
+ *    summary: Get the information of the current tournament
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    responses:
+ *      200:
+ *        description: (OK) Retrieving tournament info
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Tournament'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.get('/', validateLoggedUser, getActiveTournament); // Get tournament in course
+
+/**
+ * @openapi
+ * /tournament/all:
+ *   get:
+ *    tags:
+ *    - tournament
+ *    summary: Get the information of all tournaments
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    responses:
+ *      200:
+ *        description: A JSON array of the tournaments
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Tournament'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.get('/all', validateAdmin, getAllTournaments); // Get all tournaments
 
 // Get a tournament

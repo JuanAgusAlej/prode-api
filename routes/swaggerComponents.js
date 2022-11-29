@@ -19,6 +19,33 @@
  *      schema:
  *        type: string
  *  schemas:
+ *    Tournament:
+ *      type: object
+ *      properties:
+ *        name:
+ *          type: string
+ *          description: name of the tournament
+ *        matchesId:
+ *          type: object
+ *          description: matchesData
+ *        teamsId:
+ *          type: object
+ *          description: teamsData
+ *        predictionResultPoints:
+ *          type: integer
+ *          description: points of the prediction
+ *        predictionGoalsPoints:
+ *          type: integer
+ *          description: goals of the prediction
+ *        prizes:
+ *          type: array
+ *          description: name of the tournament
+ *        region:
+ *          type: string
+ *          description: name of the tournament
+ *        finished:
+ *          type: boolean
+ *          description: name of the tournament
  *    BodyUserSignup:
  *      type: object
  *      properties:
