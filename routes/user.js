@@ -54,7 +54,11 @@ const {
  *        $ref: '#/components/responses/NotFound'
  *      500:
  *        $ref: '#/components/responses/ServerError'
- *
+ */
+router.post('/signup', [validateSignUp], signUp); // Sign up
+
+/**
+ * @openapi
  * /user/login:
  *  post:
  *    tags:
@@ -76,7 +80,7 @@ const {
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/BodyUserLogin'
+ *              $ref: '#/components/schemas/BodyUser'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -85,7 +89,34 @@ const {
  *        $ref: '#/components/responses/NotFound'
  *      500:
  *        $ref: '#/components/responses/ServerError'
- *
+ */
+router.post('/login', [validateLogin], login); // Login
+
+/**
+ * @openapi
+ * /user/logout:
+ *  post:
+ *    tags:
+ *    - users
+ *    summary: create a log for logout action
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    responses:
+ *      204:
+ *        description: (OK)
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
+router.post('/logout', [validateLoggedUser, logout]); // Logout
+
+/**
+ * @openapi
  * /user/me:
  *  get:
  *    tags:
@@ -99,7 +130,7 @@ const {
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/BodyUserLogin'
+ *              $ref: '#/components/schemas/BodyUser'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -109,12 +140,89 @@ const {
  *      500:
  *        $ref: '#/components/responses/ServerError'
  */
-router.post('/login', [validateLogin], login); // Login
-router.post('/signup', [validateSignUp], signUp); // Sign up
-router.post('/logout', [validateLoggedUser, logout]); // Logout
 router.get('/me', validateLoggedUser, detailsUser); // Get details
+
+/**
+ * @openapi
+ * /users/me:
+ *  put:
+ *    tags:
+ *    - users
+ *    summary: edit alias or avatar of logged user
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              avatar:
+ *                type: string
+ *                description: pathfile of an image
+ *              alias:
+ *                type: string
+ *                description: an alias to identify the user in the app
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: (OK)
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/BodyUser'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
 
+/**
+ * @openapi
+ * /user/me/settings:
+ *  put:
+ *    tags:
+ *    - users
+ *    summary: edit notifications and language of logged user
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                type: boolean
+ *                description: indicates if the user allow notification through email
+ *              push:
+ *                type: boolean
+ *                description: indicates if the user allow notification through push
+ *              language:
+ *                type: string
+ *                description: language automatically set by the region or manually by the user
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: (OK)
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/BodySettings'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 // Edit settings
 router.put(
   '/me/settings',
@@ -126,8 +234,96 @@ router.put(
  * Admin endpoints *
  */
 
+/**
+ * @openapi
+ * /user:
+ *  get:
+ *    tags:
+ *    - users
+ *    summary: get all users (only admin)
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    responses:
+ *      200:
+ *        description: (OK)
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              description: array with all the users
+ *              items:
+ *                $ref: '#/components/schemas/BodyUser'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.get('/', validateAdmin, getAllUsers); // Get all users
+
+/**
+ * @openapi
+ * /user/{userId}:
+ *  get:
+ *    tags:
+ *    - users
+ *    summary: get a user (only admin)
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    - name: userId
+ *      in: path
+ *      description: id of the user you want to get
+ *      required: true
+ *      schema:
+ *        type: string
+ *    responses:
+ *      200:
+ *        description: (OK)
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/BodyUser'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.get('/:id', [validateMongoId, validateAdmin], getUser); // Get a user
+
+/**
+ * @openapi
+ * /user/{userId}:
+ *  delete:
+ *    tags:
+ *    - users
+ *    summary: disable a user (only admin)
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    - name: userId
+ *      in: path
+ *      description: id of the user you want to disable
+ *      required: true
+ *      schema:
+ *        type: string
+ *    responses:
+ *      204:
+ *        description: (OK)
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.delete('/:id', [validateMongoId, validateAdmin], disableUser); // Disable a user
 
 module.exports = router;
