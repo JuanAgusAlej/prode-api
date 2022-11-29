@@ -3,6 +3,7 @@
 const { default: mongoose } = require('mongoose');
 const { Tournament, Prediction } = require('../models');
 const Match = require('../models/Match');
+const { sendNotification } = require('../utils/notifications');
 const { calculatePoints } = require('../utils/points');
 
 const getAll = () => {
@@ -37,9 +38,14 @@ const setResults = async (matchId, tournamentId, data) => {
     matchId,
     { ...data, result },
     { new: true }
-  );
+  ).populate('teamAId teamBId');
+  const matchTeams = `${match.teamAId.shortName}-${match.teamBId.shortName}`;
+
   const tournament = await Tournament.findById(tournamentId);
-  const userPredictions = await Prediction.find({ matchId });
+  const userPredictions = await Prediction.find({ matchId }).populate({
+    path: 'userId',
+    populate: { path: 'settings' },
+  });
 
   // Init calculator
   const getPoints = calculatePoints(
@@ -50,7 +56,13 @@ const setResults = async (matchId, tournamentId, data) => {
 
   const updateQuery = [];
 
+  // Winner list by points earned
+  const notificationUsers = {};
+
   userPredictions.forEach((prediction) => {
+    const { pushTokens, settings } = prediction.userId;
+    const { email, push } = settings;
+
     const pointsEarned = getPoints(prediction);
     if (pointsEarned > 0) {
       const updatePrediction = {
@@ -64,10 +76,36 @@ const setResults = async (matchId, tournamentId, data) => {
       };
 
       updateQuery.push(updatePrediction);
+
+      if (email) {
+        // Notify by email
+      }
+
+      // Push to winner list
+      if (push && Array.isArray(pushTokens) && pushTokens.length > 0) {
+        pushTokens.forEach((token) => {
+          // Push all user's devices
+          if (notificationUsers[pointsEarned]) {
+            notificationUsers[pointsEarned].push(token);
+          } else {
+            notificationUsers[pointsEarned] = [token];
+          }
+        });
+      }
     }
   });
 
+  // Set predictions points
   await Prediction.bulkWrite(updateQuery);
+
+  // Send push notification to winners
+  if (Object.keys(notificationUsers).length > 0) {
+    sendNotification('CORRECT_PREDICTION', {
+      notifications: notificationUsers,
+      match: matchTeams,
+    });
+  }
+
   return match;
 };
 

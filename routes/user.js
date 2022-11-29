@@ -10,6 +10,7 @@ const {
   disableUser,
   signUp,
   detailsUser,
+  setPushToken,
   login,
   logout,
 } = require('../controllers/userController');
@@ -31,6 +32,7 @@ router.post('/signup', [validateSignUp], signUp); // Sign up
 router.post('/logout', [validateLoggedUser, logout]); // Logout
 router.get('/me', validateLoggedUser, detailsUser); // Get details
 router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
+router.put('/me/push', [validateLoggedUser], setPushToken); // Set push token
 
 // Edit settings
 router.put(

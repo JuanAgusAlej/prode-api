@@ -97,6 +97,16 @@ const editUser = async (req, res, next) => {
   }
 };
 
+const setPushToken = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    await userService.updatePushToken(userId, req.body.token);
+    res.sendStatus(204);
+  } catch (e) {
+    next(e);
+  }
+};
+
 const editUserSettings = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -121,5 +131,6 @@ module.exports = {
   detailsUser,
   editUser,
   editUserSettings,
+  setPushToken,
   disableUser,
 };
