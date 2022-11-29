@@ -10,6 +10,7 @@ const {
   disableUser,
   signUp,
   detailsUser,
+  setPushToken,
   login,
   logout,
 } = require('../controllers/userController');
@@ -181,6 +182,7 @@ router.get('/me', validateLoggedUser, detailsUser); // Get details
  *        $ref: '#/components/responses/ServerError'
  */
 router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
+router.put('/me/push', [validateLoggedUser], setPushToken); // Set push token
 
 /**
  * @openapi
