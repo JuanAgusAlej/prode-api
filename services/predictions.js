@@ -40,7 +40,7 @@ const createPred = async (goalsA, goalsB, userId, matchId) => {
         goalsB,
         pick: setPick(),
       },
-      { new: true }
+      { new: true },
     );
 
     // New log -> EDIT_BET
