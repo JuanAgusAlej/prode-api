@@ -22,7 +22,7 @@ const update = (id, data) => {
   return Team.findByIdAndUpdate(
     id,
     { $set: data },
-    { returnDocument: 'after' }
+    { returnDocument: 'after' },
   );
 };
 
@@ -30,4 +30,10 @@ const remove = (id) => {
   return Team.findByIdAndDelete(id);
 };
 
-module.exports = { post, getOne, getAll, update, remove };
+module.exports = {
+  post,
+  getOne,
+  getAll,
+  update,
+  remove,
+};
