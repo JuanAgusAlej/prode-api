@@ -8,7 +8,7 @@ const options = {
     info: { title: 'Tonic3-API', version: '1.0.0' },
     servers: [
       {
-        url: 'https://localhost:8080/api',
+        url: 'http://localhost:8080/api',
       },
     ],
   },
