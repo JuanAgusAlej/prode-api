@@ -29,7 +29,7 @@ const {
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/BodyTeams'
+ *            $ref: '#/components/schemas/Team'
  *      required: true
  *    responses:
  *      201:
@@ -37,7 +37,7 @@ const {
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/BodyTeams'
+ *              $ref: '#/components/schemas/Team'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -67,7 +67,7 @@ router.post('/', [validateAdmin, validateCreate], postTeam);
  *              type: array
  *              description: array with all the teams
  *              items:
- *                $ref: '#/components/schemas/BodyTeams'
+ *                $ref: '#/components/schemas/Team'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -100,7 +100,7 @@ router.get('/', [validateAdmin], getAllTeams);
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/BodyTeams'
+ *              $ref: '#/components/schemas/Team'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -133,7 +133,7 @@ router.get('/:id', [validateLoggedUser, validateMongoId], getTeam);
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/BodyTeams'
+ *              $ref: '#/components/schemas/Team'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
