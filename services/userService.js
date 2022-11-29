@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const { User, Setting } = require('../models');
 const { newLog } = require('../utils/logs');
 const { generateToken } = require('../utils/tokens');
@@ -151,6 +152,29 @@ const updateSettings = async (id, data) => {
   });
 };
 
+const updatePushToken = async (id, token) => {
+  await User.findOneAndUpdate(
+    {
+      _id: { $ne: id },
+      pushTokens: { $all: [token] },
+    },
+    {
+      $pullAll: {
+        pushTokens: [token],
+      },
+    }
+  );
+
+  await User.updateOne(
+    { _id: id },
+    {
+      $addToSet: {
+        pushTokens: token,
+      },
+    }
+  );
+};
+
 const deleteOne = (id) => {
   return User.findByIdAndUpdate(id, { state: false });
 };
@@ -164,5 +188,6 @@ module.exports = {
   getLoggedUser,
   update,
   updateSettings,
+  updatePushToken,
   deleteOne,
 };

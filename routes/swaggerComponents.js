@@ -250,21 +250,6 @@
  *        language:
  *          type: string
  *          description: language automatically set by the region or manually by the user
- *    BodyTeams:
- *      type: object
- *      properties:
- *        name:
- *          type: string
- *          description: name of the team
- *        country:
- *          type: string
- *          description: country where the team belongs
- *        shortName:
- *          type: string
- *          description: team name abbreviation
- *        logo:
- *          type: string
- *          description: pathfile of the team logo
  *    Prediction:
  *      type: object
  *      properties:

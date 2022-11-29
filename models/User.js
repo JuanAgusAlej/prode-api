@@ -41,8 +41,8 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  pushId: {
-    type: String,
+  pushTokens: {
+    type: Array,
   },
   predictionsId: [
     {

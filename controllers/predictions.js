@@ -7,7 +7,7 @@ const generatePrediction = async (req, res) => {
 
   try {
     const pred = await createPred(goalsA, goalsB, userId, matchId);
-    res.status(200).send(pred);
+    res.status(201).send(pred);
   } catch (err) {
     res.status(400).send(err.message);
   }
