@@ -30,7 +30,84 @@ const {
  * @openapi
  * /users/signup:
  *   post:
- *     summary: Insert the information of new user
+ *    tags:
+ *    - users
+ *    summary: Insert the information of new user
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/BodyUserSignup'
+ *      required: true
+ *    responses:
+ *      201:
+ *        description: (OK) user information was saved correctly
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/BodyUserSignup'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ *
+ * /user/login:
+ *  post:
+ *    tags:
+ *    - users
+ *    summary: Login to the app
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              uid:
+ *                type: string
+ *                description: id from google SSO
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: (OK) user validated correctly
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/BodyUserLogin'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ *
+ * /user/me:
+ *  get:
+ *    tags:
+ *    - users
+ *    summary: get logged user
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    responses:
+ *      200:
+ *        description: (OK)
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/BodyUserLogin'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
  */
 router.post('/login', [validateLogin], login); // Login
 router.post('/signup', [validateSignUp], signUp); // Sign up

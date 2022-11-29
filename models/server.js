@@ -45,7 +45,7 @@ class Server {
   }
 
   errorMiddleware() {
-    this.app.use((err, req, res) => {
+    this.app.use((err, req, res, next) => {
       console.log('ERROR');
       console.log(err);
       res.status(500).send('An error has ocurred');
