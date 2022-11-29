@@ -29,6 +29,12 @@ const {
 router.post('/login', [validateLogin], login); // Login
 router.post('/signup', [validateSignUp], signUp); // Sign up
 router.post('/logout', [validateLoggedUser, logout]); // Logout
+/**
+ * @openapi
+ * /users:
+ *   get:
+ *     summary: Retrieve a list of JSONPlaceholder users
+ */
 router.get('/me', validateLoggedUser, detailsUser); // Get details
 router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
 
