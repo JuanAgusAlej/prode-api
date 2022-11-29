@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../config/config');
 const routes = require('../routes');
+const { swaggerDocs: V1SwaggerDocs } = require('../swagger');
 
 require('dotenv').config();
 
@@ -53,6 +54,7 @@ class Server {
 
   listen() {
     this.app.listen(this.port, () => {
+      V1SwaggerDocs(this.app, this.port);
       console.log(`Prode app listening on port ${this.port}`);
     });
   }
