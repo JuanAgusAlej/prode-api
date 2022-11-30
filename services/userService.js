@@ -2,6 +2,7 @@
 const { User, Setting } = require('../models');
 const { newLog } = require('../utils/logs');
 const { generateToken } = require('../utils/tokens');
+const { sendActivationEmail } = require('../utils/emails');
 
 const getAll = () => {
   return User.find().populate('');
@@ -92,6 +93,8 @@ const signUp = async (data) => {
 
   // New log -> SIGN_UP
   await newLog(user.id, 'SIGN_UP');
+
+  await sendActivationEmail({ id: user.id, email: user.email });
 
   return {
     user,
