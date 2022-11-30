@@ -3,6 +3,7 @@
 const { default: mongoose } = require('mongoose');
 const { Tournament, Prediction } = require('../models');
 const Match = require('../models/Match');
+const { sendNotificationEmail } = require('../utils/emails');
 const { sendNotification } = require('../utils/notifications');
 const { calculatePoints } = require('../utils/points');
 
@@ -58,10 +59,11 @@ const setResults = async (matchId, tournamentId, data) => {
 
   // Winner list by points earned
   const notificationUsers = {};
+  const emailUsers = {};
 
   userPredictions.forEach((prediction) => {
-    const { pushTokens, settings } = prediction.userId;
-    const { email, push } = settings;
+    const { email, pushTokens, settings } = prediction.userId;
+    const { email: emailActive, push: pushActive } = settings;
 
     const pointsEarned = getPoints(prediction);
     if (pointsEarned > 0) {
@@ -77,12 +79,17 @@ const setResults = async (matchId, tournamentId, data) => {
 
       updateQuery.push(updatePrediction);
 
-      if (email) {
+      if (emailActive) {
         // Notify by email
+        if (emailUsers[pointsEarned]) {
+          emailUsers[pointsEarned].push(email);
+        } else {
+          emailUsers[pointsEarned] = [email];
+        }
       }
 
       // Push to winner list
-      if (push && Array.isArray(pushTokens) && pushTokens.length > 0) {
+      if (pushActive && Array.isArray(pushTokens) && pushTokens.length > 0) {
         pushTokens.forEach((token) => {
           // Push all user's devices
           if (notificationUsers[pointsEarned]) {
@@ -102,6 +109,14 @@ const setResults = async (matchId, tournamentId, data) => {
   if (Object.keys(notificationUsers).length > 0) {
     sendNotification('CORRECT_PREDICTION', {
       notifications: notificationUsers,
+      match: matchTeams,
+    });
+  }
+
+  // Send email notification to winners
+  if (Object.keys(emailUsers).length > 0) {
+    sendNotificationEmail('CORRECT_PREDICTION', {
+      emails: emailUsers,
       match: matchTeams,
     });
   }
