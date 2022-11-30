@@ -178,8 +178,18 @@ const updatePushToken = async (id, token) => {
   );
 };
 
-const deleteOne = (id) => {
-  return User.findByIdAndUpdate(id, { state: false });
+const changeStatus = async (id) => {
+  const user = await User.findById(id);
+  user.state = !user.state;
+  user.save();
+  return user;
+};
+
+const changeRole = async (id) => {
+  const user = await User.findById(id);
+  user.role = user.role === 'USER_ROLE' ? 'ADMIN_ROLE' : 'USER_ROLE';
+  await user.save();
+  return user;
 };
 
 module.exports = {
@@ -192,5 +202,6 @@ module.exports = {
   update,
   updateSettings,
   updatePushToken,
-  deleteOne,
+  changeStatus,
+  changeRole,
 };

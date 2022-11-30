@@ -19,10 +19,19 @@ const getUser = async (req, res, next) => {
   }
 };
 
-const disableUser = async (req, res, next) => {
+const changeStatus = async (req, res, next) => {
   try {
-    await userService.deleteOne(req.params.id);
-    res.sendStatus(204);
+    const userModified = await userService.changeStatus(req.params.id);
+    res.send(userModified);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const changeRole = async (req, res, next) => {
+  try {
+    const userModified = await userService.changeRole(req.params.id);
+    res.send(userModified);
   } catch (e) {
     next(e);
   }
@@ -132,5 +141,6 @@ module.exports = {
   editUser,
   editUserSettings,
   setPushToken,
-  disableUser,
+  changeStatus,
+  changeRole,
 };
