@@ -7,7 +7,8 @@ const {
   getUser,
   editUser,
   editUserSettings,
-  disableUser,
+  changeStatus,
+  changeRole,
   signUp,
   detailsUser,
   setPushToken,
@@ -299,33 +300,7 @@ router.get('/', validateAdmin, getAllUsers); // Get all users
  */
 router.get('/:id', [validateMongoId, validateAdmin], getUser); // Get a user
 
-/**
- * @openapi
- * /user/{userId}:
- *  delete:
- *    tags:
- *    - users
- *    summary: disable a user (only admin)
- *    parameters:
- *    - $ref: '#/components/parameters/token'
- *    - name: userId
- *      in: path
- *      description: id of the user you want to disable
- *      required: true
- *      schema:
- *        type: string
- *    responses:
- *      204:
- *        description: (OK)
- *      400:
- *        $ref: '#/components/responses/BadRequest'
- *      401:
- *        $ref: '#/components/responses/Unauthorized'
- *      404:
- *        $ref: '#/components/responses/NotFound'
- *      500:
- *        $ref: '#/components/responses/ServerError'
- */
-router.delete('/:id', [validateMongoId, validateAdmin], disableUser); // Disable a user
+router.put('/:id/status', [validateMongoId, validateAdmin], changeStatus); // Change status
 
+router.put('/:id/role', [validateMongoId, validateAdmin], changeRole); // Change role
 module.exports = router;
