@@ -194,7 +194,7 @@ router.put('/:matchId', [validateAdmin, validateUpdate], editMatch);
  *   put:
  *    tags:
  *    - tournament and matches
- *    summary: Edit a match from a tournament
+ *    summary: Edit the results of a match
  *    parameters:
  *    - name: tournamentId
  *      in: path
