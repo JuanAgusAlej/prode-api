@@ -8,6 +8,7 @@ const tournamentRoutes = require('./tournament');
 const teamsRoutes = require('./teams');
 const rolesRoutes = require('./roles');
 const userRoutes = require('./user');
+const metricsRoutes = require('./metrics');
 
 /* add routes */
 router.use('/tournament', tournamentRoutes);
@@ -15,5 +16,6 @@ router.use('/teams', teamsRoutes);
 router.use('/prediction', predictionRoute);
 router.use('/roles', rolesRoutes);
 router.use('/user', userRoutes);
+router.use('/metrics', metricsRoutes);
 
 module.exports = router;

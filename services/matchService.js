@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable comma-dangle */
-const { default: mongoose } = require('mongoose');
 const { Tournament, Prediction } = require('../models');
 const Match = require('../models/Match');
 const { sendNotificationEmail } = require('../utils/emails');
 const { sendNotification } = require('../utils/notifications');
 const { calculatePoints } = require('../utils/points');
+const metricService = require('./metricService');
 
 const getAll = () => {
   return Match.find().populate(['teamAId', 'teamBId']);
@@ -61,8 +61,11 @@ const setResults = async (matchId, tournamentId, data) => {
   const notificationUsers = {};
   const emailUsers = {};
 
+  // Email and Push metrics
+  const notificationMetrics = [];
+
   userPredictions.forEach((prediction) => {
-    const { email, pushTokens, settings } = prediction.userId;
+    const { id: userId, email, pushTokens, settings } = prediction.userId;
     const { email: emailActive, push: pushActive } = settings;
 
     const pointsEarned = getPoints(prediction);
@@ -81,6 +84,10 @@ const setResults = async (matchId, tournamentId, data) => {
 
       if (emailActive) {
         // Notify by email
+
+        // Register metric
+        notificationMetrics.push({ userId, action: 'EMAIL_NOTIFICATION' });
+
         if (emailUsers[pointsEarned]) {
           emailUsers[pointsEarned].push(email);
         } else {
@@ -90,6 +97,9 @@ const setResults = async (matchId, tournamentId, data) => {
 
       // Push to winner list
       if (pushActive && Array.isArray(pushTokens) && pushTokens.length > 0) {
+        // Register metric
+        notificationMetrics.push({ userId, action: 'PUSH_NOTIFICATION' });
+
         pushTokens.forEach((token) => {
           // Push all user's devices
           if (notificationUsers[pointsEarned]) {
@@ -120,6 +130,13 @@ const setResults = async (matchId, tournamentId, data) => {
       match: matchTeams,
     });
   }
+
+  /*
+    Save metric
+      - PUSH NOTIFICATION
+      - EMAIL NOTIFICATION
+  */
+  await metricService.addMany(notificationMetrics);
 
   return match;
 };
