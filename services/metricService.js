@@ -194,11 +194,11 @@ const getAll = async () => {
   // Init KPI calculator
   const calculateKPI = calculatorKPI(aggroupedData, users.total);
 
-  kpi.pageviewsPerUser = calculateKPI('pageviews');
-  kpi.pushNotificationsPerUser = calculateKPI('pushNotifications');
-  kpi.emailNotificationsPerUser = calculateKPI('emailNotifications');
-  kpi.predictionsPerUser = calculateKPI('predictions');
-  kpi.userPermanence = calculateKPI('minutesOfUse');
+  kpi.pageviewsPerUser = calculateKPI('pageviews').toFixed(2);
+  kpi.pushNotificationsPerUser = calculateKPI('pushNotifications').toFixed(2);
+  kpi.emailNotificationsPerUser = calculateKPI('emailNotifications').toFixed(2);
+  kpi.predictionsPerUser = calculateKPI('predictions').toFixed(2);
+  kpi.userPermanence = calculateKPI('minutesOfUse').toFixed(2);
   kpi.predictionsWinRate = (
     (predictions.won / predictions.total) *
     100
