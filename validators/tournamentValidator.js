@@ -59,9 +59,6 @@ const validateReusable = [
 const validateCreate = [
   check('name').exists().notEmpty().withMessage('Name is required'),
   check('teamsId').exists().withMessage('Teams are required'),
-  check(['predictionResultPoints', 'predictionGoalsPoints'])
-    .exists()
-    .withMessage('Prediction points are required'),
   check('region').exists().withMessage('Region is required'),
   validateReusable,
 ];

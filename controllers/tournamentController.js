@@ -46,20 +46,12 @@ const addTournament = async (req, res, next) => {
   try {
     const {
       name,
-      matchesId,
-      quantityTeams,
-      predictionResultPoints,
-      predictionGoalsPoints,
-      prizes,
+      teamsId,
       region,
     } = req.body;
     const tournament = await tournamentService.add({
       name,
-      matchesId,
-      quantityTeams,
-      predictionResultPoints,
-      predictionGoalsPoints,
-      prizes,
+      teamsId,
       region,
     });
     res.status(201).send(tournament);
@@ -72,7 +64,7 @@ const editTournament = async (req, res, next) => {
     const {
       name,
       matchesId,
-      quantityTeams,
+      teamsId,
       predictionResultPoints,
       predictionGoalsPoints,
       prizes,
@@ -84,7 +76,7 @@ const editTournament = async (req, res, next) => {
       {
         name,
         matchesId,
-        quantityTeams,
+        teamsId,
         predictionResultPoints,
         predictionGoalsPoints,
         prizes,
