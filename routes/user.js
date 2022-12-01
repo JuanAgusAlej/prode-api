@@ -82,7 +82,7 @@ router.post('/signup', [validateSignUp], signUp); // Sign up
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/BodyUser'
+ *              $ref: '#/components/schemas/BodyUserLogin'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -183,6 +183,37 @@ router.get('/me', validateLoggedUser, detailsUser); // Get details
  *        $ref: '#/components/responses/ServerError'
  */
 router.put('/me', [validateEdit, validateLoggedUser], editUser); // Edit user
+
+/**
+ * @openapi
+ * /users/me/push:
+ *  put:
+ *    tags:
+ *    - users
+ *    summary: set the token to allow the user to receive push notifications
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              token:
+ *                type: string
+ *      required: true
+ *    responses:
+ *      204:
+ *        description: (OK)
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.put('/me/push', [validateLoggedUser], setPushToken); // Set push token
 
 /**
@@ -255,7 +286,7 @@ router.put(
  *              type: array
  *              description: array with all the users
  *              items:
- *                $ref: '#/components/schemas/BodyUser'
+ *                $ref: '#/components/schemas/ResponseUserAdmin'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -288,7 +319,7 @@ router.get('/', validateAdmin, getAllUsers); // Get all users
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/BodyUser'
+ *              $ref: '#/components/schemas/ResponseUserAdmin'
  *      400:
  *        $ref: '#/components/responses/BadRequest'
  *      401:
@@ -300,7 +331,71 @@ router.get('/', validateAdmin, getAllUsers); // Get all users
  */
 router.get('/:id', [validateMongoId, validateAdmin], getUser); // Get a user
 
+/**
+ * @openapi
+ * /user/{userId}/status:
+ *  put:
+ *    tags:
+ *    - users
+ *    summary: change status of a user (only admin)
+ *    description: if status is true will be false and vice versa
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    - name: userId
+ *      in: path
+ *      description: id of the user you want to change
+ *      required: true
+ *      schema:
+ *        type: string
+ *    responses:
+ *      200:
+ *        description: (OK)
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ResponseUserAdmin'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.put('/:id/status', [validateMongoId, validateAdmin], changeStatus); // Change status
 
+/**
+ * @openapi
+ * /user/{userId}/role:
+ *  put:
+ *    tags:
+ *    - users
+ *    summary: change role of a user (only admin)
+ *    description: if the role is USER_ROLE will be ADMIN_ROLE and vice versa
+ *    parameters:
+ *    - $ref: '#/components/parameters/token'
+ *    - name: userId
+ *      in: path
+ *      description: id of the user you want to change
+ *      required: true
+ *      schema:
+ *        type: string
+ *    responses:
+ *      200:
+ *        description: (OK)
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ResponseUserAdmin'
+ *      400:
+ *        $ref: '#/components/responses/BadRequest'
+ *      401:
+ *        $ref: '#/components/responses/Unauthorized'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      500:
+ *        $ref: '#/components/responses/ServerError'
+ */
 router.put('/:id/role', [validateMongoId, validateAdmin], changeRole); // Change role
 module.exports = router;
