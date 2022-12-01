@@ -21,11 +21,11 @@ const tournamentSchema = new Schema({
   ],
   predictionResultPoints: {
     type: Number,
-    required: true,
+    default: 3,
   },
   predictionGoalsPoints: {
     type: Number,
-    required: true,
+    default: 5,
   },
   prizes: {
     type: Array,
