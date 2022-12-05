@@ -1,5 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable comma-dangle */
-const { User, Setting } = require('../models');
+const { User, Setting, Role } = require('../models');
 const { newLog } = require('../utils/logs');
 const { generateToken } = require('../utils/tokens');
 const { sendActivationEmail } = require('../utils/emails');
@@ -8,15 +9,15 @@ const getAll = () => {
   return User.find().populate('');
 };
 
-const getById = (id) => {
+const getById = id => {
   return User.findById(id);
 };
 
-const login = async (uid) => {
+const login = async uid => {
   const user = await User.findOne({ uid })
     .populate('settings', 'email push language -_id')
-    .populate('predictionsId');
-
+    .populate('predictionsId')
+    .populate('role');
   if (!user) return;
   const points = await user.getPoints();
   const userData = {
@@ -29,7 +30,7 @@ const login = async (uid) => {
     region: user.region,
     timezone: user.timezone,
     language: user.settings.language,
-    role: user.role,
+    role: user.role.rol,
     state: user.state,
     avatar: user.avatar,
     validated: user.validated,
@@ -45,7 +46,7 @@ const login = async (uid) => {
     uid: user.uid,
     email: user.email,
     region: user.region,
-    role: user.role,
+    role: user.role.rol,
     validated: user.validated,
     language: user.settings.language,
   };
@@ -60,12 +61,12 @@ const login = async (uid) => {
   };
 };
 
-const logout = async (userId) => {
+const logout = async userId => {
   // New log -> LOG_OUT
   await newLog(userId, 'LOG_OUT');
 };
 
-const signUp = async (data) => {
+const signUp = async data => {
   let language;
   const alias = data.alias ? data.alias : data.name;
   if (data.region === 'AR') {
@@ -77,11 +78,12 @@ const signUp = async (data) => {
   }
 
   const user = await User.create({ ...data, alias });
+  const userr = await User.findOne({ uid: user.uid }).populate('role');
   const tokenPayload = {
     id: user.id,
     uid: user.uid,
     email: user.email,
-    role: user.role,
+    role: userr.role.rol,
     validated: user.validated,
     region: user.region,
     language,
@@ -102,10 +104,11 @@ const signUp = async (data) => {
   };
 };
 
-const getLoggedUser = async (id) => {
+const getLoggedUser = async id => {
   const user = await User.findById(id)
     .populate('settings', 'email push language -_id')
-    .populate('predictionsId');
+    .populate('predictionsId')
+    .populate('role');
   if (!user) return;
   const points = await user.getPoints();
   const userData = {
@@ -118,7 +121,7 @@ const getLoggedUser = async (id) => {
     region: user.region,
     timezone: user.timezone,
     language: user.settings.language,
-    role: user.role,
+    role: user.role.rol,
     state: user.state,
     avatar: user.avatar,
     validated: user.validated,
@@ -178,16 +181,18 @@ const updatePushToken = async (id, token) => {
   );
 };
 
-const changeStatus = async (id) => {
+const changeStatus = async id => {
   const user = await User.findById(id);
   user.state = !user.state;
   user.save();
   return user;
 };
 
-const changeRole = async (id) => {
-  const user = await User.findById(id);
-  user.role = user.role === 'USER_ROLE' ? 'ADMIN_ROLE' : 'USER_ROLE';
+const changeRole = async id => {
+  const user = await User.findById(id).populate('role');
+  const userRole = await Role.findOne({ rol: 'USER_ROLE' });
+  const adminRole = await Role.findOne({ rol: 'ADMIN_ROLE' });
+  user.role = user.role.rol === 'USER_ROLE' ? adminRole._id : userRole._id;
   await user.save();
   return user;
 };
