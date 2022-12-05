@@ -30,6 +30,7 @@ const matchSchema = new Schema({
   },
   instance: {
     type: String,
+    required: true,
   },
   predictionsId: [
     {
