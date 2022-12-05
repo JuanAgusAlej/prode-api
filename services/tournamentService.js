@@ -3,7 +3,7 @@ const { User, Prediction } = require('../models');
 const Tournament = require('../models/tournament');
 
 const getAll = () => {
-  return Tournament.find();
+  return Tournament.find().populate(['teamsId']);
 };
 
 const getActive = (region) => {
