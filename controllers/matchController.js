@@ -21,12 +21,13 @@ const getMatch = async (req, res, next) => {
 const addMatch = async (req, res, next) => {
   try {
     const { tournamentId } = req.params;
-    const { date, teamAId, teamBId } = req.body;
+    const { date, teamAId, teamBId, instance } = req.body;
     const match = await matchService.add({
       date,
       teamAId,
       teamBId,
       tournamentId,
+      instance,
     });
     res.status(201).send(match);
   } catch (e) {
@@ -35,11 +36,12 @@ const addMatch = async (req, res, next) => {
 };
 const editMatch = async (req, res, next) => {
   try {
-    const { date, teamAId, teamBId } = req.body;
+    const { date, teamAId, teamBId, instance } = req.body;
     const ModifiedMatch = await matchService.update(req.params.matchId, {
       date,
       teamAId,
       teamBId,
+      instance,
     });
     res.send(ModifiedMatch);
   } catch (e) {
