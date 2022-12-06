@@ -69,6 +69,7 @@ const editTournament = async (req, res, next) => {
       predictionGoalsPoints,
       prizes,
       region,
+      finished,
     } = req.body;
 
     const ModifiedTournament = await tournamentService.update(
@@ -81,6 +82,7 @@ const editTournament = async (req, res, next) => {
         predictionGoalsPoints,
         prizes,
         region,
+        finished,
       },
     );
     res.send(ModifiedTournament);

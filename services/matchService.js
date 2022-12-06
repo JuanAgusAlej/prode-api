@@ -66,7 +66,12 @@ const setResults = async (matchId, tournamentId, data) => {
   const notificationMetrics = [];
 
   userPredictions.forEach((prediction) => {
-    const { id: userId, email, pushTokens, settings } = prediction.userId;
+    const {
+      id: userId,
+      email,
+      pushTokens,
+      settings
+    } = prediction.userId;
     const { email: emailActive, push: pushActive } = settings;
 
     const pointsEarned = getPoints(prediction);

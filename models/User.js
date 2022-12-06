@@ -30,8 +30,9 @@ const userSchema = new Schema({
     required: true,
   },
   role: {
-    type: String,
-    default: 'USER_ROLE',
+    type: Schema.Types.ObjectId,
+    ref: 'Role',
+    default: '637644f468389d9b4de65b24',
   },
   state: {
     type: Boolean,
