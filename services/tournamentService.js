@@ -89,6 +89,18 @@ const deleteOne = (id) => {
   return Tournament.findByIdAndDelete(id);
 };
 
+const finish = async (id) => {
+  const tournament = await Tournament.findById(id);
+  tournament.finished = true;
+  await tournament.save();
+  const users = await User.find({ region: tournament.region });
+  console.log('USERSSSS', users);
+  users.forEach(user => {
+    user.predictionsId = [];
+    user.save();
+  });
+};
+
 module.exports = {
   getAll,
   getActive,
@@ -97,4 +109,5 @@ module.exports = {
   add,
   update,
   deleteOne,
+  finish,
 };
