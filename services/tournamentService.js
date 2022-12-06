@@ -94,10 +94,11 @@ const finish = async (id) => {
   tournament.finished = true;
   await tournament.save();
   const users = await User.find({ region: tournament.region });
+  console.log('USERSSSS', users);
   users.forEach(user => {
     user.predictionsId = [];
+    user.save();
   });
-  await users.save();
 };
 
 module.exports = {
