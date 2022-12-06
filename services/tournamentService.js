@@ -74,7 +74,6 @@ const getLeaderBoard = async (tournamentId, region) => {
     },
     { $sort: { points: -1 } },
   ]);
-  console.log('PREDICTIONSS', predictions);
   return predictions;
 };
 
