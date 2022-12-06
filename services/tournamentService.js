@@ -29,7 +29,7 @@ const getById = (id) => {
 const getLeaderBoard = async (tournamentId, region) => {
   const users = await User.find({ region }).distinct('_id');
   const matches = await Tournament.find({ id: tournamentId }).distinct(
-    'matchesId'
+    'matchesId',
   );
 
   const predictions = await Prediction.aggregate([

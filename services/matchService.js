@@ -7,8 +7,19 @@ const { sendNotification } = require('../utils/notifications');
 const { calculatePoints } = require('../utils/points');
 const metricService = require('./metricService');
 
-const getAll = () => {
-  return Match.find().populate(['teamAId', 'teamBId']);
+const getAll = async (tournamentId = null) => {
+  if (tournamentId === null) {
+    return Match.find().populate(['teamAId', 'teamBId']);
+  } else {
+    const { matchesId } = await Tournament.findById(tournamentId).populate({
+      path: 'matchesId',
+      populate: ['teamAId', 'teamBId']
+    });
+    console.log('asaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    console.log(matchesId);
+
+    return matchesId;
+  }
 };
 
 const getById = (id) => {
