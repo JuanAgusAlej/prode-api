@@ -2,7 +2,8 @@ const matchService = require('../services/matchService');
 
 const getAllMatches = async (req, res, next) => {
   try {
-    const matches = await matchService.getAll();
+    const { tournamentId } = req.params;
+    const matches = await matchService.getAll(tournamentId);
     res.send(matches);
   } catch (e) {
     next(e);
