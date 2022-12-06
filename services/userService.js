@@ -6,7 +6,7 @@ const { generateToken } = require('../utils/tokens');
 const { sendActivationEmail } = require('../utils/emails');
 
 const getAll = () => {
-  return User.find().populate('');
+  return User.find().populate('role');
 };
 
 const getById = id => {
