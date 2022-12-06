@@ -29,7 +29,7 @@ const getById = (id) => {
 const getLeaderBoard = async (tournamentId, region) => {
   const users = await User.find({ region }).distinct('_id');
   const matches = await Tournament.find({ id: tournamentId }).distinct(
-    'matchesId'
+    'matchesId',
   );
 
   const predictions = await Prediction.aggregate([
@@ -89,6 +89,17 @@ const deleteOne = (id) => {
   return Tournament.findByIdAndDelete(id);
 };
 
+const finish = async (id) => {
+  const tournament = await Tournament.findById(id);
+  tournament.finished = true;
+  await tournament.save();
+  const users = await User.find({ region: tournament.region });
+  users.forEach(user => {
+    user.predictionsId = [];
+  });
+  await users.save();
+};
+
 module.exports = {
   getAll,
   getActive,
@@ -97,4 +108,5 @@ module.exports = {
   add,
   update,
   deleteOne,
+  finish,
 };

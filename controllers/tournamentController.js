@@ -100,6 +100,15 @@ const deleteTournament = async (req, res, next) => {
   }
 };
 
+const finishTournament = async (req, res, next) => {
+  try {
+    tournamentService.finish(req.params.tournamentId);
+    res.sendStatus(204);
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   getAllTournaments,
   getTournament,
@@ -108,4 +117,5 @@ module.exports = {
   addTournament,
   editTournament,
   deleteTournament,
+  finishTournament,
 };

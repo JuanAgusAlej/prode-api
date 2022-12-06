@@ -10,6 +10,7 @@ const {
   addTournament,
   editTournament,
   deleteTournament,
+  finishTournament,
 } = require('../controllers/tournamentController');
 
 const matchRoutes = require('./match');
@@ -284,6 +285,8 @@ router.delete(
   [validateTournamentId, validateAdmin],
   deleteTournament
 );
+
+router.put('/:tournamentId/finish', [validateTournamentId, validateAdmin], finishTournament);
 
 router.use('/:tournamentId/match', [validateTournamentId], matchRoutes); // Matches
 
