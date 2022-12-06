@@ -72,7 +72,10 @@ const validateUpdate = [
 ];
 
 const validateTournamentId = [
-  check('tournamentId').notEmpty().isMongoId(),
+  check('tournamentId')
+    .notEmpty()
+    .isMongoId()
+    .withMessage('Tournament is invalid'),
   (req, res, next) => {
     validateResult(req, res, next);
   },

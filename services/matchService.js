@@ -40,6 +40,7 @@ const setResults = async (matchId, tournamentId, data) => {
     { ...data, result },
     { new: true }
   ).populate('teamAId teamBId');
+
   const matchTeams = `${match.teamAId.shortName}-${match.teamBId.shortName}`;
 
   const tournament = await Tournament.findById(tournamentId);

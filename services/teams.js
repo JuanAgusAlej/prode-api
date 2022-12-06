@@ -22,7 +22,7 @@ const update = (id, data) => {
   return Team.findByIdAndUpdate(
     id,
     { $set: data },
-    { returnDocument: 'after' },
+    { returnDocument: 'after' }
   );
 };
 

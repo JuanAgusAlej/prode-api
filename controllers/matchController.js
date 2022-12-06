@@ -27,6 +27,7 @@ const addMatch = async (req, res, next) => {
       teamBId,
       instance,
     } = req.body;
+
     const match = await matchService.add({
       date,
       teamAId,
@@ -47,6 +48,7 @@ const editMatch = async (req, res, next) => {
       teamBId,
       instance,
     } = req.body;
+
     const ModifiedMatch = await matchService.update(req.params.matchId, {
       date,
       teamAId,
