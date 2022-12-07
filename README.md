@@ -49,6 +49,8 @@ Deberá poder usarse como PWA y como Web App tanto en mobile, tablets y desktop.
 		
 - Una vez configurado ejecutar el proyecto con `npm start`
 
+## Diagrama DB
+- ### <a href="https://dbdiagram.io/d/6328db260911f91ba5e92378" target="_blank">dbDiagram<a/>
 ## Documentacion
 - ### <a href="https://github.com/JuanAgusAlej/prode" target="_blank">Front</a>
 - ###  <a href="https://github.com/JuanAgusAlej/prode-api" target="_blank">Back</a>
