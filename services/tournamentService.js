@@ -3,11 +3,23 @@ const { User, Prediction } = require('../models');
 const Tournament = require('../models/tournament');
 
 const getAll = () => {
-  return Tournament.find();
+  return Tournament.find().populate([
+    { path: 'teamsId', options: { sort: { country: 1 } } },
+    {
+      path: 'matchesId',
+      options: { sort: { date: 1 }, populate: { path: 'teamAId teamBId' } },
+    },
+  ]);
 };
 
-const getActive = () => {
-  return Tournament.findOne({ finished: false });
+const getActive = (region) => {
+  return Tournament.findOne({ finished: false, region }).populate([
+    { path: 'teamsId', options: { sort: { country: 1 } } },
+    {
+      path: 'matchesId',
+      options: { sort: { date: 1 }, populate: { path: 'teamAId teamBId' } },
+    },
+  ]);
 };
 
 const getById = (id) => {
@@ -17,7 +29,7 @@ const getById = (id) => {
 const getLeaderBoard = async (tournamentId, region) => {
   const users = await User.find({ region }).distinct('_id');
   const matches = await Tournament.find({ id: tournamentId }).distinct(
-    'matchesId'
+    'matchesId',
   );
 
   const predictions = await Prediction.aggregate([
@@ -77,6 +89,16 @@ const deleteOne = (id) => {
   return Tournament.findByIdAndDelete(id);
 };
 
+const finish = async (id) => {
+  const tournament = await Tournament.findByIdAndUpdate(id, { finished: true }, { new: true });
+  const users = await User.find({ region: tournament.region });
+  console.log('USERSSSS', users);
+  users.forEach(user => {
+    user.predictionsId = [];
+    user.save();
+  });
+};
+
 module.exports = {
   getAll,
   getActive,
@@ -85,4 +107,5 @@ module.exports = {
   add,
   update,
   deleteOne,
+  finish,
 };

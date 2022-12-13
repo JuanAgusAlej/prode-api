@@ -29,14 +29,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  language: {
-    type: String,
-    enum: ['ES', 'PT', 'EN'],
-    required: true,
-  },
   role: {
-    type: String,
-    default: 'USER_ROLE',
+    type: Schema.Types.ObjectId,
+    ref: 'Role',
+    default: '637644f468389d9b4de65b24',
   },
   state: {
     type: Boolean,
@@ -46,6 +42,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  pushTokens: {
+    type: Array,
+  },
   predictionsId: [
     {
       type: Schema.Types.ObjectId,
@@ -54,13 +53,13 @@ const userSchema = new Schema({
       default: null,
     },
   ],
+  settings: {
+    type: Schema.Types.ObjectId,
+    ref: 'Setting',
+  },
   validated: {
     type: Boolean,
     default: false,
-  },
-  notifications: {
-    type: Schema.Types.ObjectId,
-    ref: 'Notification',
   },
 });
 

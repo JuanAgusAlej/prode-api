@@ -8,7 +8,8 @@ const tournamentRoutes = require('./tournament');
 const teamsRoutes = require('./teams');
 const rolesRoutes = require('./roles');
 const userRoutes = require('./user');
-const emailSenderRoutes = require('./emailSender');
+const metricsRoutes = require('./metrics');
+const healthCheck = require('./healthCheck');
 
 /* add routes */
 router.use('/tournament', tournamentRoutes);
@@ -16,6 +17,7 @@ router.use('/teams', teamsRoutes);
 router.use('/prediction', predictionRoute);
 router.use('/roles', rolesRoutes);
 router.use('/user', userRoutes);
-router.use('/email', emailSenderRoutes);
+router.use('/metrics', metricsRoutes);
+router.use('/healthcheck', healthCheck);
 
 module.exports = router;

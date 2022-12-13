@@ -1,5 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const { User, Match, Prediction } = require('../models');
+const { newLog } = require('../utils/logs');
+const metricService = require('./metricService');
 
 const createPred = async (goalsA, goalsB, userId, matchId) => {
   const prediction = await Prediction.findOne({ matchId, userId });
@@ -16,6 +18,12 @@ const createPred = async (goalsA, goalsB, userId, matchId) => {
     });
 
     const lastPred = await newPred.save();
+
+    // New log -> NEW_BET
+    await newLog(userId, 'NEW_BET', { goalsA, goalsB, matchId });
+
+    // Save metric -> NEW_BET
+    await metricService.add({ userId, action: 'NEW_BET', value: matchId });
 
     user.predictionsId = user.predictionsId.concat(lastPred._id);
     await user.save();
@@ -38,6 +46,13 @@ const createPred = async (goalsA, goalsB, userId, matchId) => {
       },
       { new: true }
     );
+
+    // New log -> EDIT_BET
+    await newLog(userId, 'EDIT_BET', { goalsA, goalsB, matchId });
+
+    // Save metric -> EDIT_BET
+    await metricService.add({ userId, action: 'EDIT_BET', value: matchId });
+
     return predictionModified;
   }
 };

@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const logSchema = new Schema({
+const metricSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -14,10 +14,10 @@ const logSchema = new Schema({
     required: true,
   },
   value: {
-    type: Schema.Types.Mixed,
+    type: String,
   },
 });
 
-const Log = model('Log', logSchema);
+const Metric = model('Metric', metricSchema);
 
-module.exports = Log;
+module.exports = Metric;

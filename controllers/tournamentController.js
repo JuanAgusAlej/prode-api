@@ -11,7 +11,8 @@ const getAllTournaments = async (req, res, next) => {
 
 const getActiveTournament = async (req, res, next) => {
   try {
-    const tournament = await tournamentService.getActive();
+    const { region } = req.user;
+    const tournament = await tournamentService.getActive(region);
     res.send(tournament);
   } catch (e) {
     next(e);
@@ -45,20 +46,12 @@ const addTournament = async (req, res, next) => {
   try {
     const {
       name,
-      matchesId,
-      quantityTeams,
-      predictionResultPoints,
-      predictionGoalsPoints,
-      prizes,
+      teamsId,
       region,
     } = req.body;
     const tournament = await tournamentService.add({
       name,
-      matchesId,
-      quantityTeams,
-      predictionResultPoints,
-      predictionGoalsPoints,
-      prizes,
+      teamsId,
       region,
     });
     res.status(201).send(tournament);
@@ -71,11 +64,12 @@ const editTournament = async (req, res, next) => {
     const {
       name,
       matchesId,
-      quantityTeams,
+      teamsId,
       predictionResultPoints,
       predictionGoalsPoints,
       prizes,
       region,
+      finished,
     } = req.body;
 
     const ModifiedTournament = await tournamentService.update(
@@ -83,11 +77,12 @@ const editTournament = async (req, res, next) => {
       {
         name,
         matchesId,
-        quantityTeams,
+        teamsId,
         predictionResultPoints,
         predictionGoalsPoints,
         prizes,
         region,
+        finished,
       },
     );
     res.send(ModifiedTournament);
@@ -105,6 +100,15 @@ const deleteTournament = async (req, res, next) => {
   }
 };
 
+const finishTournament = async (req, res, next) => {
+  try {
+    tournamentService.finish(req.params.tournamentId);
+    res.sendStatus(204);
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   getAllTournaments,
   getTournament,
@@ -113,4 +117,5 @@ module.exports = {
   addTournament,
   editTournament,
   deleteTournament,
+  finishTournament,
 };

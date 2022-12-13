@@ -2,7 +2,8 @@ const matchService = require('../services/matchService');
 
 const getAllMatches = async (req, res, next) => {
   try {
-    const matches = await matchService.getAll();
+    const { tournamentId } = req.params;
+    const matches = await matchService.getAll(tournamentId);
     res.send(matches);
   } catch (e) {
     next(e);
@@ -21,12 +22,19 @@ const getMatch = async (req, res, next) => {
 const addMatch = async (req, res, next) => {
   try {
     const { tournamentId } = req.params;
-    const { date, teamAId, teamBId } = req.body;
+    const {
+      date,
+      teamAId,
+      teamBId,
+      instance,
+    } = req.body;
+
     const match = await matchService.add({
       date,
       teamAId,
       teamBId,
       tournamentId,
+      instance,
     });
     res.status(201).send(match);
   } catch (e) {
@@ -35,11 +43,18 @@ const addMatch = async (req, res, next) => {
 };
 const editMatch = async (req, res, next) => {
   try {
-    const { date, teamAId, teamBId } = req.body;
+    const {
+      date,
+      teamAId,
+      teamBId,
+      instance,
+    } = req.body;
+
     const ModifiedMatch = await matchService.update(req.params.matchId, {
       date,
       teamAId,
       teamBId,
+      instance,
     });
     res.send(ModifiedMatch);
   } catch (e) {
@@ -49,12 +64,11 @@ const editMatch = async (req, res, next) => {
 
 const setResults = async (req, res, next) => {
   try {
-    const { goalsA, goalsB, result } = req.body;
+    const { goalsA, goalsB } = req.body;
     const { matchId, tournamentId } = req.params;
     const finishedMatch = await matchService.setResults(matchId, tournamentId, {
       goalsA,
       goalsB,
-      result,
     });
     res.send(finishedMatch);
   } catch (e) {
